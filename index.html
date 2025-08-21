@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人博客 | Personal Blog</title>
+    <meta name="description" content="这是我的个人博客，分享技术心得、生活感悟和学习笔记">
+    <meta name="author" content="[您的姓名]">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home">我的博客</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">首页</a>
+                <a href="#about" class="nav-link">关于我</a>
+                <a href="#blog" class="nav-link">博客</a>
+                <a href="#projects" class="nav-link">项目</a>
+                <a href="#contact" class="nav-link">联系</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主页部分 -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>你好，我是 <span class="highlight">[您的姓名]</span></h1>
+                <h2>一名 <span class="typing-text">[您的职业/专业]</span></h2>
+                <p>欢迎来到我的个人博客！在这里我会分享我的技术心得、学习笔记以及生活感悟。</p>
+                <div class="hero-buttons">
+                    <a href="#about" class="btn btn-primary">了解更多</a>
+                    <a href="#blog" class="btn btn-secondary">阅读博客</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="avatar-placeholder">
+                    <i class="fas fa-user"></i>
+                    <p>在此处添加您的照片</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我部分 -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title">关于我</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>个人简介</h3>
+                    <p>
+                        [在这里写您的个人简介。比如：我是一名充满热情的软件开发者，专注于前端技术和用户体验设计。
+                        我喜欢学习新技术，解决复杂问题，并通过代码创造有价值的产品。]
+                    </p>
+                    <p>
+                        [继续添加更多关于您的信息，比如教育背景、工作经历、兴趣爱好等。]
+                    </p>
+                    
+                    <h3>技能专长</h3>
+                    <div class="skills">
+                        <div class="skill-item">
+                            <span class="skill-name">[技能1，例如：JavaScript]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="90"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[技能2，例如：React]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="85"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[技能3，例如：Node.js]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="80"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[技能4，例如：Python]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" data-progress="75"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">[数字]</div>
+                        <div class="stat-label">年工作经验</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">[数字]</div>
+                        <div class="stat-label">完成项目</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">[数字]</div>
+                        <div class="stat-label">博客文章</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">[数字]</div>
+                        <div class="stat-label">GitHub 星标</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 博客部分 -->
+    <section id="blog" class="blog">
+        <div class="container">
+            <h2 class="section-title">最新博客</h2>
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">[发布日期]</span>
+                            <span class="blog-category">[分类标签]</span>
+                        </div>
+                        <h3 class="blog-title">[博客文章标题1]</h3>
+                        <p class="blog-excerpt">
+                            [在这里写文章摘要。这是您第一篇博客文章的简短描述，让读者了解文章的主要内容...]
+                        </p>
+                        <a href="#" class="blog-link">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">[发布日期]</span>
+                            <span class="blog-category">[分类标签]</span>
+                        </div>
+                        <h3 class="blog-title">[博客文章标题2]</h3>
+                        <p class="blog-excerpt">
+                            [在这里写文章摘要。这是您第二篇博客文章的简短描述，展示您的专业知识和见解...]
+                        </p>
+                        <a href="#" class="blog-link">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-image">
+                        <div class="blog-image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span class="blog-date">[发布日期]</span>
+                            <span class="blog-category">[分类标签]</span>
+                        </div>
+                        <h3 class="blog-title">[博客文章标题3]</h3>
+                        <p class="blog-excerpt">
+                            [在这里写文章摘要。这是您第三篇博客文章的简短描述，分享您的学习心得和经验...]
+                        </p>
+                        <a href="#" class="blog-link">阅读更多 <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </article>
+            </div>
+            <div class="blog-more">
+                <a href="blog.html" class="btn btn-primary">查看所有文章</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 项目部分 -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <h2 class="section-title">我的项目</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-image-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">[项目名称1]</h3>
+                        <p class="project-description">
+                            [项目描述。简要介绍这个项目的功能、使用的技术栈以及您在其中的贡献...]
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">[技术1]</span>
+                            <span class="tech-tag">[技术2]</span>
+                            <span class="tech-tag">[技术3]</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fab fa-github"></i> 源码
+                            </a>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> 演示
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-image-placeholder">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">[项目名称2]</h3>
+                        <p class="project-description">
+                            [项目描述。展示您的另一个重要项目，突出您的技术能力和创新思维...]
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">[技术1]</span>
+                            <span class="tech-tag">[技术2]</span>
+                            <span class="tech-tag">[技术3]</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fab fa-github"></i> 源码
+                            </a>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> 演示
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-image-placeholder">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">[项目名称3]</h3>
+                        <p class="project-description">
+                            [项目描述。介绍您的第三个项目，展示您在不同领域的技术实力...]
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">[技术1]</span>
+                            <span class="tech-tag">[技术2]</span>
+                            <span class="tech-tag">[技术3]</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" class="project-link">
+                                <i class="fab fa-github"></i> 源码
+                            </a>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i> 演示
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系部分 -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">联系我</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>让我们建立联系</h3>
+                    <p>如果您对我的工作感兴趣，或者想要合作，请随时联系我！</p>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>邮箱</h4>
+                            <p>[您的邮箱地址]</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>电话</h4>
+                            <p>[您的电话号码]</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>位置</h4>
+                            <p>[您的城市/地区]</p>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-weibo"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>发送消息</h3>
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="您的姓名" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="您的邮箱" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" placeholder="主题" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="您的消息" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">发送消息</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>我的博客</h3>
+                    <p>感谢您访问我的个人博客！</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="#home">首页</a></li>
+                        <li><a href="#about">关于我</a></li>
+                        <li><a href="#blog">博客</a></li>
+                        <li><a href="#projects">项目</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>关注我</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 [您的姓名]. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
