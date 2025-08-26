@@ -1,0 +1,234 @@
+/* Word Cloud Styles */
+.wordcloud-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.wordcloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    min-height: 400px;
+    position: relative;
+    padding: 2rem;
+}
+
+.word-item {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transform-origin: center;
+    animation: wordFloat 0.6s ease forwards;
+    opacity: 0;
+}
+
+/* Floating animation for word cloud items */
+@keyframes wordFloat {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Different sizes for visual hierarchy */
+.word-item.size-large {
+    font-size: 2rem;
+    padding: 1rem 1.5rem;
+    animation-delay: 0.1s;
+}
+
+.word-item.size-medium {
+    font-size: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    animation-delay: 0.2s;
+}
+
+.word-item.size-small {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    animation-delay: 0.3s;
+}
+
+.word-item.size-tiny {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+    animation-delay: 0.4s;
+}
+
+/* Color themes for different interests */
+.word-item.tech {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+}
+
+.word-item.creative {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
+}
+
+.word-item.travel {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+}
+
+.word-item.gaming {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+    box-shadow: 0 4px 15px rgba(67, 233, 123, 0.4);
+}
+
+.word-item.lifestyle {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    box-shadow: 0 4px 15px rgba(250, 112, 154, 0.4);
+}
+
+.word-item.learning {
+    background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+    color: #333;
+    text-shadow: none;
+    box-shadow: 0 4px 15px rgba(168, 237, 234, 0.4);
+}
+
+/* Hover effects */
+.word-item:hover {
+    transform: scale(1.2) translateY(-5px);
+    z-index: 10;
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.word-item.tech:hover {
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #7c8bf0 0%, #8a5cb8 100%);
+}
+
+.word-item.creative:hover {
+    box-shadow: 0 8px 25px rgba(240, 147, 251, 0.6);
+    background: linear-gradient(135deg, #f5a3ff 0%, #ff6b82 100%);
+}
+
+.word-item.travel:hover {
+    box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+    background: linear-gradient(135deg, #5fbcff 0%, #1ffaff 100%);
+}
+
+.word-item.gaming:hover {
+    box-shadow: 0 8px 25px rgba(67, 233, 123, 0.6);
+    background: linear-gradient(135deg, #53f991 0%, #4dffed 100%);
+}
+
+.word-item.lifestyle:hover {
+    box-shadow: 0 8px 25px rgba(250, 112, 154, 0.6);
+    background: linear-gradient(135deg, #ff80b0 0%, #ffe756 100%);
+}
+
+.word-item.learning:hover {
+    box-shadow: 0 8px 25px rgba(168, 237, 234, 0.6);
+    background: linear-gradient(135deg, #b8f4f1 0%, #ffdef1 100%);
+}
+
+/* Click animation */
+.word-item:active {
+    transform: scale(1.1) translateY(-2px);
+    transition: transform 0.1s ease;
+}
+
+/* Pulse animation for featured items */
+.word-item.featured {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+    50% {
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.8);
+    }
+    100% {
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .wordcloud-container {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+    
+    .wordcloud {
+        padding: 1rem;
+        min-height: 300px;
+    }
+    
+    .word-item.size-large {
+        font-size: 1.6rem;
+        padding: 0.8rem 1.2rem;
+    }
+    
+    .word-item.size-medium {
+        font-size: 1.3rem;
+        padding: 0.6rem 1rem;
+    }
+    
+    .word-item.size-small {
+        font-size: 1.1rem;
+        padding: 0.4rem 0.8rem;
+    }
+    
+    .word-item.size-tiny {
+        font-size: 0.9rem;
+        padding: 0.3rem 0.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .wordcloud {
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    
+    .word-item.size-large {
+        font-size: 1.4rem;
+        padding: 0.6rem 1rem;
+    }
+    
+    .word-item.size-medium {
+        font-size: 1.2rem;
+        padding: 0.5rem 0.8rem;
+    }
+    
+    .word-item.size-small {
+        font-size: 1rem;
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .word-item.size-tiny {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.5rem;
+    }
+    
+    .word-item:hover {
+        transform: scale(1.1) translateY(-3px);
+    }
+}
