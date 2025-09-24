@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>在线打字练习与中文打字测试 | SmartType Training</title>
+  <meta name="description" content="SmartType：AI语料 + 新闻练习的中文打字平台。支持考试模式、实时WPM与准确率、历史成绩与评级，适配移动端，SEO优化。">
+  <link rel="icon" href="/public/favicon.svg">
+  <link rel="manifest" href="/public/manifest.webmanifest">
+  <link rel="canonical" href="https://example.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="在线打字练习与中文打字测试 | SmartType Training">
+  <meta property="og:description" content="AI语料与新闻练习素材，实时WPM/准确率与历史成绩评级。">
+  <meta property="og:url" content="https://example.com/">
+  <meta property="og:image" content="https://example.com/og-cover.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="在线打字练习与中文打字测试 | SmartType Training">
+  <meta name="twitter:description" content="AI语料与新闻练习素材，实时WPM/准确率与历史成绩评级。">
+  <meta name="keywords" content="在线打字练习,中文打字测试,打字速度测试,AI打字训练,新闻打字练习,打字考试平台,中国打字练习,中文输入法练习">
+  <script type="application/ld+json">{
+    "@context":"https://schema.org","@type":"WebSite","name":"SmartType Training","url":"https://example.com/","potentialAction":{"@type":"SearchAction","target":"https://example.com/?q={search_term_string}","query-input":"required name=search_term_string"}}
+  </script>
+  <link rel="preload" href="../styles/styles.css" as="style">
+  <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+  <header class="header container" role="banner">
+    <div class="logo"><img src="/public/favicon.svg" alt="SmartType 标志"><strong>SmartType</strong></div>
+    <nav class="nav" role="navigation" aria-label="主导航">
+      <a class="active" href="./index.html">首页</a>
+      <a href="./exam.html">考试模式</a>
+      <a href="./practice.html">练习模式</a>
+    </nav>
+  </header>
+
+  <main class="container" role="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">AI 打字训练平台</h1>
+      <p>在线打字练习、中文打字测试、打字速度测试，兼顾 SEO 与移动端体验。</p>
+      <div style="margin-top:1rem; display:flex; gap:.75rem; flex-wrap:wrap">
+        <a class="button" href="./exam.html">进入考试模式</a>
+        <a class="button secondary" href="./practice.html">进入练习模式</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="today-stats" class="card">
+      <h2 id="today-stats">今日统计</h2>
+      <div class="stat" id="todayStat">
+        <div class="item"><div class="label">练习次数</div><div class="value" id="statSessions">0</div></div>
+        <div class="item"><div class="label">平均速度 WPM</div><div class="value" id="statAvgWpm">0</div></div>
+        <div class="item"><div class="label">平均准确率</div><div class="value" id="statAvgAcc">0%</div></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="hot-news" class="card" style="margin-top:1rem">
+      <h2 id="hot-news">热门新闻预览</h2>
+      <div class="grid" id="newsPreview"></div>
+    </section>
+  </main>
+
+  <footer class="footer container" role="contentinfo">
+    <div>© <span id="year"></span> SmartType Training · <a href="/public/robots.txt">robots</a> · <a href="/public/sitemap.xml">sitemap</a></div>
+  </footer>
+
+  <script src="../scripts/main.js" defer></script>
+</body>
+</html>

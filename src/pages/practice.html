@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>练习模式 - 新闻打字练习 | SmartType</title>
+  <meta name="description" content="练习模式：按分类选择新闻语料，自动清洗与长度控制，实时错误提示与自定义时长，适合持续练习。">
+  <link rel="icon" href="/public/favicon.svg">
+  <link rel="manifest" href="/public/manifest.webmanifest">
+  <link rel="canonical" href="https://example.com/practice">
+  <meta name="keywords" content="新闻打字练习,在线打字练习,中文输入法练习,AI打字训练">
+  <link rel="stylesheet" href="../styles/styles.css">
+</head>
+<body>
+  <header class="header container">
+    <div class="logo"><img src="/public/favicon.svg" alt="SmartType 标志"><strong>SmartType</strong></div>
+    <nav class="nav">
+      <a href="./index.html">首页</a>
+      <a href="./exam.html">考试模式</a>
+      <a class="active" href="./practice.html">练习模式</a>
+    </nav>
+  </header>
+  <main class="container">
+    <div class="card">
+      <h1>练习模式</h1>
+      <div style="display:flex; gap:.75rem; flex-wrap:wrap; align-items:center">
+        <label>分类：</label>
+        <select id="category" class="input" style="max-width:200px">
+          <option value="headline">要闻</option>
+          <option value="tech">科技</option>
+          <option value="society">社会</option>
+        </select>
+        <label>时长：</label>
+        <select id="duration" class="input" style="max-width:200px">
+          <option value="180">3 分钟</option>
+          <option value="300">5 分钟</option>
+        </select>
+        <button id="startBtn" class="button">开始</button>
+      </div>
+    </div>
+
+    <div class="text-block" id="textBlock" style="margin-top:1rem"></div>
+    <div style="margin-top:1rem"><input id="typingInput" class="input" type="text" placeholder="在此输入…" autocomplete="off" disabled></div>
+
+    <div class="card" style="margin-top:1rem">
+      <h2>实时统计</h2>
+      <div class="stat">
+        <div class="item"><div class="label">WPM</div><div class="value" id="statWpm">0</div></div>
+        <div class="item"><div class="label">准确率</div><div class="value" id="statAcc">100%</div></div>
+        <div class="item"><div class="label">按键</div><div class="value" id="statKeys">0</div></div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer container">© <span id="year"></span> SmartType</footer>
+  <script src="../scripts/practice.js" defer></script>
+</body>
+</html>
