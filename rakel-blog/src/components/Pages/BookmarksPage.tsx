@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { bookmarksData } from '../../data/bookmarks';
-import { Bookmark } from '../../types';
+import type { Bookmark } from '../../types';
 import * as Icons from 'lucide-react';
 import { ExternalLink, Search, X } from 'lucide-react';
 
@@ -257,7 +257,7 @@ const categoryLabels = {
   entertainment: '娱乐'
 };
 
-export const BookmarksPage: React.FC = () => {
+export const BookmarksPage: FC = () => {
   const [activeCategory, setActiveCategory] = useState<'all' | Bookmark['category']>('all');
   const [searchQuery, setSearchQuery] = useState('');
 

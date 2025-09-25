@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projectsData } from '../../data/projects';
-import { Project } from '../../types';
-import { Github, ExternalLink, Star, Code, Calendar } from 'lucide-react';
+import { Github, ExternalLink, Star, Code } from 'lucide-react';
 
 const PageContainer = styled.div`
   max-width: 1200px;
@@ -246,7 +245,7 @@ const FlipHint = styled.div`
   z-index: 2;
 `;
 
-export const ProjectsPage: React.FC = () => {
+export const ProjectsPage: FC = () => {
   const [filter, setFilter] = useState<'all' | 'featured'>('all');
   const [flippedCards, setFlippedCards] = useState<Set<string>>(new Set());
 

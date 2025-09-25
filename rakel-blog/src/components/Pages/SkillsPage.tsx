@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { skillsData } from '../../data/skills';
 import { projectsData } from '../../data/projects';
-import { Skill } from '../../types';
+import type { Skill } from '../../types';
 import { SkillRadar } from '../UI/SkillRadar';
 import * as Icons from 'lucide-react';
 
@@ -209,7 +209,7 @@ const categoryLabels = {
   languages: '语言'
 };
 
-export const SkillsPage: React.FC = () => {
+export const SkillsPage: FC = () => {
   const [activeCategory, setActiveCategory] = useState<'all' | Skill['category']>('all');
   const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
 

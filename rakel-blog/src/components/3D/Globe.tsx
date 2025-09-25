@@ -1,10 +1,10 @@
-import React, { useRef, useMemo, useState } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { OrbitControls, Sphere, Text } from '@react-three/drei';
-import { TextureLoader, Vector3 } from 'three';
+import { useRef, useMemo, useState, type FC } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Text } from '@react-three/drei';
+import { Vector3 } from 'three';
 import * as THREE from 'three';
 import { travelData } from '../../data/travel';
-import { TravelLocation } from '../../types';
+import type { TravelLocation } from '../../types';
 
 interface GlobeProps {
   onLocationClick: (location: TravelLocation) => void;
@@ -29,7 +29,7 @@ const latLngToVector3 = (lat: number, lng: number, radius: number = 5): Vector3 
   return new Vector3(x, y, z);
 };
 
-const LocationMarker: React.FC<LocationMarkerProps> = ({ location, onClick, isSelected }) => {
+const LocationMarker: FC<LocationMarkerProps> = ({ location, onClick, isSelected }) => {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   
@@ -87,7 +87,7 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({ location, onClick, isSe
   );
 };
 
-const EarthSphere: React.FC = () => {
+const EarthSphere: FC = () => {
   const meshRef = useRef<THREE.Mesh>(null);
   
   // 创建简单的地球纹理
@@ -130,7 +130,7 @@ const EarthSphere: React.FC = () => {
   );
 };
 
-export const Globe: React.FC<GlobeProps> = ({ onLocationClick, selectedLocation }) => {
+export const Globe: FC<GlobeProps> = ({ onLocationClick, selectedLocation }) => {
   return (
     <Canvas
       camera={{ position: [0, 0, 15], fov: 60 }}

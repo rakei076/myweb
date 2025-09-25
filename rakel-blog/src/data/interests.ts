@@ -1,4 +1,4 @@
-import { Interest } from '../types';
+import type { Interest } from '../types';
 
 export const interestsData: Interest[] = [
   // 游戏类

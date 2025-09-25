@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { timelineData } from '../../data/timeline';
-import { TimelineEvent } from '../../types';
+import type { TimelineEvent } from '../../types';
 import * as Icons from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
 
@@ -190,7 +190,7 @@ const typeLabels = {
   milestone: '里程碑'
 };
 
-const TimelineItem: React.FC<{ event: TimelineEvent; index: number }> = ({ event, index }) => {
+const TimelineItem: FC<{ event: TimelineEvent; index: number }> = ({ event, index }) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -239,7 +239,7 @@ const TimelineItem: React.FC<{ event: TimelineEvent; index: number }> = ({ event
   );
 };
 
-export const TimelinePage: React.FC = () => {
+export const TimelinePage: FC = () => {
   const [filter, setFilter] = useState<'all' | TimelineEvent['type']>('all');
 
   const filteredEvents = filter === 'all' 

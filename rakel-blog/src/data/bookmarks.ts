@@ -1,4 +1,4 @@
-import { Bookmark } from '../types';
+import type { Bookmark } from '../types';
 
 export const bookmarksData: Bookmark[] = [
   // 技术类

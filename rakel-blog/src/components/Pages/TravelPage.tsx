@@ -1,9 +1,9 @@
-import React, { useState, Suspense } from 'react';
+import { useState, Suspense, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { travelData } from '../../data/travel';
-import { TravelLocation } from '../../types';
+import type { TravelLocation } from '../../types';
 import { Globe } from '../3D/Globe';
 import { MapPin, Calendar, Camera, Heart, X } from 'lucide-react';
 
@@ -211,7 +211,7 @@ const ModalDescription = styled.p`
   font-size: 1.1rem;
 `;
 
-export const TravelPage: React.FC = () => {
+export const TravelPage: FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<TravelLocation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -291,7 +291,7 @@ export const TravelPage: React.FC = () => {
               
               <PhotoGrid>
                 {location.photos.map((photo, i) => (
-                  <PhotoPlaceholder key={i}>
+                  <PhotoPlaceholder key={`${location.id}-${photo}-${i}`} title={photo}>
                     <Camera size={20} />
                   </PhotoPlaceholder>
                 ))}

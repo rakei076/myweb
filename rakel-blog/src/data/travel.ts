@@ -1,4 +1,4 @@
-import { TravelLocation } from '../types';
+import type { TravelLocation } from '../types';
 
 export const travelData: TravelLocation[] = [
   {

@@ -1,8 +1,8 @@
-import React, { useMemo } from 'react';
+import { useMemo, useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion } from 'framer-motion';
-import { Skill } from '../../types';
+import type { Skill } from '../../types';
 
 interface SkillRadarProps {
   skills: Skill[];
@@ -86,8 +86,8 @@ const TooltipLevel = styled.div`
   color: ${theme.colors.text.secondary};
 `;
 
-export const SkillRadar: React.FC<SkillRadarProps> = ({ skills, size = 300 }) => {
-  const [hoveredSkill, setHoveredSkill] = React.useState<{ skill: Skill; x: number; y: number } | null>(null);
+export const SkillRadar: FC<SkillRadarProps> = ({ skills, size = 300 }) => {
+  const [hoveredSkill, setHoveredSkill] = useState<{ skill: Skill; x: number; y: number } | null>(null);
   
   const center = size / 2;
   const maxRadius = center - 60;

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { interestsData } from '../../data/interests';
-import { Interest } from '../../types';
+import type { Interest } from '../../types';
 import * as Icons from 'lucide-react';
 
 const PageContainer = styled.div`
@@ -180,7 +180,7 @@ const categoryLabels = {
   life: '生活'
 };
 
-export const InterestsPage: React.FC = () => {
+export const InterestsPage: FC = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | Interest['category']>('all');
 
   const filteredInterests = activeFilter === 'all' 
