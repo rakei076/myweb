@@ -57,6 +57,17 @@ export const travelData: TravelLocation[] = [
     color: '#FFEAA7'
   },
   {
+    id: 'guangzhou',
+    name: '广州',
+    country: '中国',
+    coordinates: [113.2644, 23.1291],
+    visitDate: '2024-04-10',
+    photos: ['/images/travel/guangzhou1.jpg'],
+    description: '南方的花城，美食天堂。品尝了正宗的粤菜和早茶，感受了岭南文化的独特魅力。珠江夜景令人难忘。',
+    mood: '愉悦',
+    color: '#FF9A8B'
+  },
+  {
     id: 'hiroshima',
     name: '广岛',
     country: '日本',
