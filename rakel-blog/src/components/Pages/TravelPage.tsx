@@ -230,7 +230,10 @@ export const TravelPage: FC = () => {
   };
 
   useEffect(() => {
-    if (!import.meta.env.DEV) return;
+    const shouldRunDemo = import.meta.env.MODE === 'development' && import.meta.env.VITE_TRAVEL_DEMO === 'true';
+    if (!shouldRunDemo) {
+      return;
+    }
 
     const sequence = ['osaka', 'tokyo', 'guangzhou'] as const;
     const timers = sequence.map((id, index) =>

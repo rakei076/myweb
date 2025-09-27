@@ -255,7 +255,7 @@ const GlobeScene: FC<GlobeProps> = ({ onLocationClick, selectedLocation }) => {
 
   useFrame(() => {
     if (groupRef.current) {
-      const speed = selectedLocation ? 0.0005 : 0.003;
+      const speed = selectedLocation ? 0.00025 : 0.0012;
       groupRef.current.rotation.y += speed;
     }
   });
@@ -304,7 +304,7 @@ export const Globe: FC<GlobeProps> = ({ onLocationClick, selectedLocation }) => 
         enableDamping
         dampingFactor={0.08}
         autoRotate
-        autoRotateSpeed={0.4}
+        autoRotateSpeed={0.18}
       />
     </Canvas>
   );
