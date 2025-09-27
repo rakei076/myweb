@@ -32,22 +32,10 @@ export const navigationItems: NavItem[] = [
     icon: 'PenTool'
   },
   {
-    id: 'skills',
-    title: '技术栈',
-    path: '/skills',
-    icon: 'Zap'
-  },
-  {
     id: 'timeline',
     title: '成长时间轴',
     path: '/timeline',
     icon: 'Clock'
-  },
-  {
-    id: 'bookmarks',
-    title: '友链书签',
-    path: '/bookmarks',
-    icon: 'Bookmark'
   },
   {
     id: 'guestbook',
