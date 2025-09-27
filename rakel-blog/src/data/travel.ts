@@ -57,6 +57,17 @@ export const travelData: TravelLocation[] = [
     color: '#FFEAA7'
   },
   {
+    id: 'guangzhou',
+    name: '广州',
+    country: '中国',
+    coordinates: [113.2644, 23.1291],
+    visitDate: '2024-03-02',
+    photos: ['/images/travel/guangzhou1.jpg'],
+    description: '回国后专程拜访的岭南名城，珠江夜游和广州塔的灯光秀让人难忘，街头遍布的早茶点让我大饱口福。',
+    mood: '怀念',
+    color: '#FF9F1C'
+  },
+  {
     id: 'hiroshima',
     name: '广岛',
     country: '日本',

@@ -1,4 +1,4 @@
-import { useState, Suspense, type FC } from 'react';
+import { useState, useEffect, Suspense, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -228,6 +228,24 @@ export const TravelPage: FC = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedLocation(null), 300);
   };
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) return;
+
+    const sequence = ['osaka', 'tokyo', 'guangzhou'] as const;
+    const timers = sequence.map((id, index) =>
+      window.setTimeout(() => {
+        const location = travelData.find((item) => item.id === id);
+        if (location) {
+          handleLocationClick(location);
+        }
+      }, 1400 * (index + 1))
+    );
+
+    return () => {
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
+  }, []);
 
   return (
     <PageContainer>
