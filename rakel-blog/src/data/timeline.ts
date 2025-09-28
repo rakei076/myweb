@@ -2,84 +2,116 @@ import type { TimelineEvent } from '../types';
 
 export const timelineData: TimelineEvent[] = [
   {
-    id: 'high-school-graduation',
-    date: '2022-06-01',
-    title: '高中毕业',
-    description: '完成高中学业，开始为日本留学做准备。在这段时间里，我开始接触编程，对计算机科学产生了浓厚的兴趣。',
-    type: 'education',
-    icon: 'GraduationCap'
+    id: 'birth-2005',
+    date: '2005-07-06',
+    title: '出生在广州',
+    description: '夏日出生的我，从此开始与这个世界的缘分。',
+    type: 'milestone',
+    icon: 'Star'
   },
   {
-    id: 'first-web-project',
-    date: '2022-08-15',
-    title: '第一个网页项目',
-    description: '使用HTML、CSS和JavaScript创建了我的第一个个人网页。虽然很简单，但这是我编程之路的起点。',
-    type: 'project',
-    icon: 'Code'
+    id: 'lushan-2016',
+    date: '2016-06-18',
+    title: '庐山的盛夏',
+    description: '小学阶段的第一次游学，第一次站在云海之上，感受大自然的磅礴。',
+    type: 'milestone',
+    icon: 'Mountain'
   },
   {
-    id: 'japan-departure',
-    date: '2023-09-01',
-    title: '赴日留学',
-    description: '踏上了前往日本的求学之路，开始了大学生活。这是人生中的一个重要转折点，充满了挑战和机遇。',
+    id: 'inner-mongolia-2017',
+    date: '2017-08-12',
+    title: '驰骋内蒙古草原',
+    description: '第一次的自驾游,内蒙古的羊肉是那样的香。',
+    type: 'milestone',
+    icon: 'Wind'
+  },
+  {
+    id: 'europe-trip-2018',
+    date: '2018-02-10',
+    title: '第一次欧洲旅行',
+    description: '巴黎卢浮宫、罗马斗兽场……艺术与历史的冲击，让我见到了不一样的世界。',
+    type: 'milestone',
+    icon: 'Globe'
+  },
+  {
+    id: 'usa-trip-2019',
+    date: '2019-01-28',
+    title: '深冬里的美国之行',
+    description: '在纽约的街头见到高耸的天际线，原来那里没有枪击。',
     type: 'milestone',
     icon: 'Plane'
   },
   {
-    id: 'react-learning',
-    date: '2023-10-20',
-    title: '学习React框架',
-    description: '开始深入学习React框架，这极大地提升了我的前端开发能力。从此我对现代前端开发有了更深入的理解。',
-    type: 'achievement',
-    icon: 'Code'
+    id: 'middle-school-graduation-2020',
+    date: '2020-06-30',
+    title: '初中毕业',
+    description: '与同学们挥手告别的那个夏天，开启了新一段学习旅程。',
+    type: 'education',
+    icon: 'GraduationCap'
   },
   {
-    id: 'first-react-app',
-    date: '2023-12-10',
-    title: '完成第一个React应用',
-    description: '成功开发并部署了我的第一个React应用 - 一个简单的任务管理工具。这让我对全栈开发有了初步的认识。',
-    type: 'project',
-    icon: 'Rocket'
+    id: 'high-school-graduation-2023',
+    date: '2023-06-30',
+    title: '高中毕业',
+    description: '三年奔赴终于落幕，高考结束后期待更广阔的世界。',
+    type: 'education',
+    icon: 'GraduationCap'
   },
   {
-    id: 'typescript-adoption',
-    date: '2024-01-15',
-    title: '掌握TypeScript',
-    description: '开始在项目中使用TypeScript，大大提高了代码的可维护性和开发效率。类型安全的编程方式让我受益匪浅。',
-    type: 'achievement',
-    icon: 'Shield'
-  },
-  {
-    id: 'hackathon-participation',
-    date: '2024-03-20',
-    title: '参加编程比赛',
-    description: '参加了学校组织的编程比赛，与同学们组队开发了一个AI聊天助手应用，获得了不错的成绩。',
-    type: 'achievement',
-    icon: 'Trophy'
-  },
-  {
-    id: 'internship-start',
-    date: '2024-06-01',
-    title: '开始实习',
-    description: '在一家本地科技公司开始了我的第一份实习工作，主要负责前端开发。这让我有机会在真实的商业环境中应用所学知识。',
+    id: 'wuhan-2023',
+    date: '2023-07-08',
+    title: '仲夏的武汉',
+    description: '长江大桥边吹过解暑的风，未来只有未知，但我也做好了新的准备。',
     type: 'milestone',
-    icon: 'Briefcase'
+    icon: 'MapPin'
   },
   {
-    id: 'open-source-contribution',
-    date: '2024-08-10',
-    title: '开源贡献',
-    description: '开始为开源项目做贡献，提交了我的第一个Pull Request。这让我更深入地了解了开源社区的协作方式。',
-    type: 'achievement',
-    icon: 'GitBranch'
+    id: 'okayama-2024',
+    date: '2024-04-12',
+    title: '樱花季的冈山',
+    description: '开始了我的留学生活,第一次见到樱花就被他的美所震惊,畅想着未来的生活会不会和动漫中一样呢?',
+    type: 'milestone',
+    icon: 'Flower'
   },
   {
-    id: 'blog-creation',
-    date: '2024-12-01',
-    title: '创建个人博客',
-    description: '设计并开发了这个个人博客网站，采用了现代化的技术栈和活页夹设计理念。这是我技能综合运用的体现。',
-    type: 'project',
-    icon: 'BookOpen'
+    id: 'osaka-2024',
+    date: '2024-05-18',
+    title: '大阪的烟火气',
+    description: '奈良那霸道的鹿和道顿堀的夜晚与美食让我彻底爱上关西。',
+    type: 'milestone',
+    icon: 'Building2'
+  },
+  {
+    id: 'luoyang-2024',
+    date: '2024-08-12',
+    title: '再访古都洛阳',
+    description: '龙门石窟的雕刻与伊河水映照着中华文明的底色,第一次与高中同学结伴出游每一刻都深深的刻在我的脑海中。',
+    type: 'milestone',
+    icon: 'Landmark'
+  },
+  {
+    id: 'xian-2024',
+    date: '2024-08-18',
+    title: '西安城墙上的傍晚',
+    description: '在古城墙眺望日落，历史在脚步间慢慢展开。',
+    type: 'milestone',
+    icon: 'Castle'
+  },
+  {
+    id: 'kyoto-nagoya-tokyo-2025',
+    date: '2025-01-08',
+    title: '本州纵贯之旅',
+    description: '从京都的古朴到名古屋的匠心，再到东京的摩天线，感受日本不同节奏的城市故事。',
+    type: 'milestone',
+    icon: 'Route'
+  },
+  {
+    id: 'chongqing-2025',
+    date: '2025-05-02',
+    title: '火锅与天际线的重庆假期',
+    description: '山城的立体街道、穿楼轻轨与两江夜景交织成记忆，热辣的火锅和热情的人情味同样令人难忘。',
+    type: 'milestone',
+    icon: 'MapPin'
   }
 ];
 

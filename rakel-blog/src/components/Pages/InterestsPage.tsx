@@ -4,7 +4,6 @@ import { theme } from '../../styles/theme';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { interestsData } from '../../data/interests';
 import type { Interest } from '../../types';
-import * as Icons from 'lucide-react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PageContainer = styled.div`
@@ -54,10 +53,25 @@ const FilterTab = styled(motion.button)<{ $isActive: boolean }>`
   }
 `;
 
+const FullBleed = styled.div`
+  margin-left: calc(-1 * ${theme.spacing.xxl});
+  margin-right: calc(-1 * ${theme.spacing.xxl});
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    margin-left: calc(-1 * ${theme.spacing.lg});
+    margin-right: calc(-1 * ${theme.spacing.lg});
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    margin-left: calc(-1 * ${theme.spacing.md});
+    margin-right: calc(-1 * ${theme.spacing.md});
+  }
+`;
+
 const CarouselContainer = styled.div`
   position: relative;
   height: 520px;
-  margin-bottom: ${theme.spacing.xl};
+  margin-bottom: ${theme.spacing.lg};
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     height: 460px;
@@ -71,14 +85,13 @@ const CarouselContainer = styled.div`
 const PosterCard = styled(motion.div)<{ $background: string; $image?: string }>`
   position: absolute;
   inset: 0;
-  border-radius: ${theme.borderRadius.lg};
+  border-radius: 0;
   background: ${({ $background, $image }) => $image ? `url(${$image}) center / cover no-repeat` : $background};
   color: #f9fbff;
-  box-shadow: 0 24px 40px rgba(15, 26, 67, 0.25);
+  box-shadow: none;
   overflow: hidden;
-  padding: ${theme.spacing.xl};
+  padding: 0;
   display: flex;
-  flex-direction: column;
   isolation: isolate;
 
   &::before {
@@ -87,54 +100,14 @@ const PosterCard = styled(motion.div)<{ $background: string; $image?: string }>`
     inset: 0;
     background:
       ${({ $background }) => $background},
-      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3), transparent 55%),
-      radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.25), transparent 60%),
-      linear-gradient(135deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55));
-    opacity: 0.7;
+      linear-gradient(140deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55));
+    opacity: 0.6;
     z-index: 0;
     pointer-events: none;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: ${theme.spacing.lg};
-  }
-`;
-
-const PosterTopRow = styled.div`
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const PosterBadge = styled.div`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  background: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  font-weight: 600;
-  backdrop-filter: blur(6px);
-`;
-
-const PosterIcon = styled.div`
-  width: 56px;
-  height: 56px;
-  border-radius: ${theme.borderRadius.round};
-  background: rgba(255, 255, 255, 0.18);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  box-shadow: 0 6px 14px rgba(12, 19, 51, 0.35);
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    width: 48px;
-    height: 48px;
+    border-radius: 0;
   }
 `;
 
@@ -143,23 +116,22 @@ const PosterContent = styled.div`
   z-index: 1;
   flex: 1;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: ${theme.spacing.lg};
-  padding: 0 ${theme.spacing.xl};
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: ${theme.spacing.xxl};
+  text-align: left;
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    padding: 0 ${theme.spacing.md};
+    padding: ${theme.spacing.lg};
   }
 `;
 
 const PosterTitle = styled.h2`
-  font-size: 3rem;
+  font-size: clamp(2.8rem, 6vw, 4.2rem);
   margin: 0;
-  letter-spacing: 0.04em;
-  text-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  text-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     font-size: 2.4rem;
@@ -170,89 +142,17 @@ const PosterTitle = styled.h2`
   }
 `;
 
-const PosterTagline = styled.p`
-  font-size: 1.4rem;
-  max-width: 620px;
-  line-height: 1.6;
-  margin: 0;
-  color: rgba(255, 255, 255, 0.92);
-  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 1.2rem;
-  }
-
-  @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 1.05rem;
-  }
-`;
-
-const PosterHighlight = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: ${theme.spacing.sm};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  background: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-`;
-
-const PosterDescription = styled.p`
-  margin: 0;
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-`;
-
-const PosterFooter = styled.div`
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: ${theme.spacing.sm};
-  background: rgba(10, 16, 40, 0.25);
-  border-radius: ${theme.borderRadius.md};
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  backdrop-filter: blur(6px);
-  align-self: flex-start;
-`;
-
-const FooterLabel = styled.span`
-  font-size: 0.85rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
-`;
-
-const AchievementRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${theme.spacing.sm};
-`;
-
-const AchievementChip = styled.span`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  background: rgba(255, 255, 255, 0.18);
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
-`;
-
 const NavigationButton = styled.button<{ $position: 'left' | 'right' }>`
   position: absolute;
   top: 50%;
-  ${props => (props.$position === 'left' ? 'left: -28px;' : 'right: -28px;')}
+  z-index: 2;
+  ${props => (props.$position === 'left' ? 'left: -64px;' : 'right: -64px;')}
   transform: translateY(-50%);
   width: 56px;
   height: 56px;
   border-radius: ${theme.borderRadius.round};
   border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(10, 16, 40, 0.3);
+  background: rgba(15, 20, 30, 0.32);
   color: #ffffff;
   display: flex;
   align-items: center;
@@ -263,13 +163,13 @@ const NavigationButton = styled.button<{ $position: 'left' | 'right' }>`
 
   &:hover {
     transform: translateY(-50%) scale(1.05);
-    background: rgba(10, 16, 40, 0.55);
+    background: rgba(20, 24, 32, 0.55);
   }
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     width: 46px;
     height: 46px;
-    ${props => (props.$position === 'left' ? 'left: -10px;' : 'right: -10px;')}
+    ${props => (props.$position === 'left' ? 'left: -24px;' : 'right: -24px;')}
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -401,11 +301,6 @@ export const InterestsPage: FC = () => {
   const currentInterest = filteredInterests[currentIndex];
   const currentBackgroundImage = resolveBackgroundImage(currentInterest?.heroBackgroundImage);
 
-  const getIcon = (iconName: string, size = 28) => {
-    const IconComponent = (Icons as Record<string, any>)[iconName];
-    return IconComponent ? <IconComponent size={size} /> : null;
-  };
-
   return (
     <PageContainer>
       <Header
@@ -413,10 +308,8 @@ export const InterestsPage: FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Title>兴趣爱好</Title>
-        <Subtitle>
-          把每一份热爱的瞬间做成海报，用最沉浸的方式记录我的游戏、技术与生活灵感。
-        </Subtitle>
+        <Title>{currentInterest?.name ?? '兴趣'}</Title>
+        <Subtitle>左右滑动或点击指示点切换不同兴趣。</Subtitle>
       </Header>
 
       <FilterTabs>
@@ -437,7 +330,8 @@ export const InterestsPage: FC = () => {
         <EmptyState>这个分类暂时还没有内容，换一个标签看看吧。</EmptyState>
       ) : (
         <>
-          <CarouselContainer>
+          <FullBleed>
+            <CarouselContainer>
             <NavigationButton $position="left" type="button" onClick={() => paginate(-1)} aria-label="切换上一项">
               <ChevronLeft size={24} />
             </NavigationButton>
@@ -462,34 +356,14 @@ export const InterestsPage: FC = () => {
                   dragElastic={0.2}
                   onDragEnd={handleDragEnd}
                 >
-                  <PosterTopRow>
-                    <PosterBadge>{categoryLabels[currentInterest.category]}</PosterBadge>
-                    <PosterIcon>{getIcon(currentInterest.icon, 28)}</PosterIcon>
-                  </PosterTopRow>
-
                   <PosterContent>
                     <PosterTitle>{currentInterest.name}</PosterTitle>
-                    {currentInterest.heroTagline && <PosterTagline>{currentInterest.heroTagline}</PosterTagline>}
-                    {currentInterest.heroHighlight && <PosterHighlight>{currentInterest.heroHighlight}</PosterHighlight>}
-                    <PosterDescription>{currentInterest.description}</PosterDescription>
                   </PosterContent>
-
-                  {currentInterest.achievements && currentInterest.achievements.length > 0 && (
-                    <PosterFooter>
-                      <FooterLabel>闪光瞬间</FooterLabel>
-                      <AchievementRow>
-                        {currentInterest.achievements.map((achievement, index) => (
-                          <AchievementChip key={`${currentInterest.id}-achievement-${index}`}>
-                            {achievement}
-                          </AchievementChip>
-                        ))}
-                      </AchievementRow>
-                    </PosterFooter>
-                  )}
                 </PosterCard>
               )}
             </AnimatePresence>
-          </CarouselContainer>
+            </CarouselContainer>
+          </FullBleed>
 
           <Indicators>
             {filteredInterests.map((interest, index) => (

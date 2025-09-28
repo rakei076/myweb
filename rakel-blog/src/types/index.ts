@@ -50,6 +50,8 @@ export interface BlogPost {
   publishDate: string;
   tags: string[];
   featured: boolean;
+  readingTime: string;
+  coverImage?: string;
 }
 
 export interface TimelineEvent {
@@ -57,8 +59,9 @@ export interface TimelineEvent {
   date: string;
   title: string;
   description: string;
-  type: 'education' | 'project' | 'achievement' | 'milestone';
+  type: 'education' | 'project' | 'achievement' | 'milestone' | 'blog';
   icon: string;
+  relatedPostId?: string;
 }
 
 export interface Bookmark {
@@ -77,5 +80,16 @@ export interface Skill {
   level: number; // 1-10
   icon: string;
   projects: string[]; // project ids
+}
+
+export interface GuestbookMessage {
+  id: string;
+  name: string;
+  message: string;
+  createdAt: string;
+  location?: string;
+  mood?: string;
+  highlight?: boolean;
+  reply?: string;
 }
 

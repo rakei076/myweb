@@ -1,11 +1,13 @@
-import { useState, type FC } from 'react';
+import { useState, useMemo, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence } from 'framer-motion';
 import { timelineData } from '../../data/timeline';
-import type { TimelineEvent } from '../../types';
+import { blogPosts } from '../../data/blog';
+import type { TimelineEvent, BlogPost } from '../../types';
 import * as Icons from 'lucide-react';
 import { useInView } from 'react-intersection-observer';
+import { Link } from 'react-router-dom';
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -87,6 +89,7 @@ const TimelineNode = styled(motion.div)<{ $type: TimelineEvent['type'] }>`
       case 'project': return '#2196F3';
       case 'achievement': return '#FF9800';
       case 'milestone': return '#9C27B0';
+      case 'blog': return '#4B5563';
       default: return theme.colors.accent;
     }
   }};
@@ -168,6 +171,7 @@ const TypeBadge = styled.div<{ $type: TimelineEvent['type'] }>`
       case 'project': return '#E3F2FD';
       case 'achievement': return '#FFF3E0';
       case 'milestone': return '#F3E5F5';
+      case 'blog': return '#ECEFF1';
       default: return theme.colors.accent;
     }
   }};
@@ -177,6 +181,7 @@ const TypeBadge = styled.div<{ $type: TimelineEvent['type'] }>`
       case 'project': return '#1565C0';
       case 'achievement': return '#EF6C00';
       case 'milestone': return '#7B1FA2';
+      case 'blog': return '#374151';
       default: return theme.colors.text.primary;
     }
   }};
@@ -187,10 +192,54 @@ const typeLabels = {
   education: '教育',
   project: '项目',
   achievement: '成就',
-  milestone: '里程碑'
+  milestone: '里程碑',
+  blog: '文章'
 };
 
-const TimelineItem: FC<{ event: TimelineEvent; index: number }> = ({ event, index }) => {
+interface TimelineDisplayItem extends TimelineEvent {
+  relatedPost?: BlogPost;
+}
+
+const BlogPreviewCard = styled(Link)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ${theme.spacing.lg};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-radius: ${theme.borderRadius.md};
+  background-color: ${theme.colors.primary};
+  border: 1px solid ${theme.colors.border};
+  color: ${theme.colors.text.primary};
+  transition: all 0.25s ease;
+
+  &:hover {
+    border-color: #b4b5bc;
+    transform: translateY(-2px);
+  }
+`;
+
+const BlogPreviewInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.xs};
+`;
+
+const BlogPreviewTitle = styled.span`
+  font-weight: 600;
+  font-size: 0.95rem;
+`;
+
+const BlogPreviewMeta = styled.span`
+  font-size: 0.8rem;
+  color: ${theme.colors.text.secondary};
+`;
+
+const BlogPreviewCTA = styled.span`
+  font-size: 0.85rem;
+  color: ${theme.colors.text.secondary};
+`;
+
+const TimelineItem: FC<{ event: TimelineDisplayItem; index: number }> = ({ event, index }) => {
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1
@@ -200,6 +249,8 @@ const TimelineItem: FC<{ event: TimelineEvent; index: number }> = ({ event, inde
     const IconComponent = (Icons as any)[iconName];
     return IconComponent ? <IconComponent size={20} /> : null;
   };
+
+  const relatedPost = event.relatedPost;
 
   return (
     <TimelineItemContainer ref={ref}>
@@ -234,6 +285,25 @@ const TimelineItem: FC<{ event: TimelineEvent; index: number }> = ({ event, inde
           {getIcon(event.icon)}
           {typeLabels[event.type]}
         </TypeBadge>
+
+        {relatedPost && (
+          <div style={{ marginTop: theme.spacing.lg }}>
+            <BlogPreviewCard to={`/blog#${relatedPost.id}`}>
+              <BlogPreviewInfo>
+                <BlogPreviewTitle>{relatedPost.title}</BlogPreviewTitle>
+                <BlogPreviewMeta>
+                  {new Date(relatedPost.publishDate).toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                  · {relatedPost.readingTime}
+                </BlogPreviewMeta>
+              </BlogPreviewInfo>
+              <BlogPreviewCTA>查看文章 →</BlogPreviewCTA>
+            </BlogPreviewCard>
+          </div>
+        )}
       </TimelineCard>
     </TimelineItemContainer>
   );
@@ -242,11 +312,28 @@ const TimelineItem: FC<{ event: TimelineEvent; index: number }> = ({ event, inde
 export const TimelinePage: FC = () => {
   const [filter, setFilter] = useState<'all' | TimelineEvent['type']>('all');
 
-  const filteredEvents = filter === 'all' 
-    ? timelineData.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    : timelineData
-        .filter(event => event.type === filter)
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const combinedEvents = useMemo<TimelineDisplayItem[]>(() => {
+    const blogEventItems: TimelineDisplayItem[] = blogPosts.map(post => ({
+      id: `blog-${post.id}`,
+      date: post.publishDate,
+      title: post.title,
+      description: post.summary,
+      type: 'blog',
+      icon: 'PenSquare',
+      relatedPostId: post.id,
+      relatedPost: post
+    }));
+
+    return [...timelineData, ...blogEventItems]
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  }, []);
+
+  const filteredEvents = useMemo<TimelineDisplayItem[]>(() => {
+    if (filter === 'all') {
+      return combinedEvents;
+    }
+    return combinedEvents.filter(event => event.type === filter);
+  }, [combinedEvents, filter]);
 
   return (
     <PageContainer>
@@ -257,8 +344,8 @@ export const TimelinePage: FC = () => {
       >
         <Title>成长时间轴</Title>
         <Subtitle>
-          记录我从高中毕业到现在的重要时刻和成长历程，
-          每一个节点都见证着我在学习和技术道路上的进步。
+          从童年的旅行记忆到如今的城市探索，我把那些闪闪发光的瞬间浓缩在这里，
+          让每一段旅程、每一次成长都在时间轴上留下注脚。
         </Subtitle>
       </Header>
 
@@ -278,7 +365,7 @@ export const TimelinePage: FC = () => {
 
       <TimelineContainer>
         <AnimatePresence mode="wait">
-          {filteredEvents.map((event, index) => (
+          {filteredEvents.map((event: TimelineDisplayItem, index: number) => (
             <TimelineItem
               key={`${filter}-${event.id}`}
               event={event}

@@ -8,10 +8,8 @@ import { InterestsPage } from './components/Pages/InterestsPage';
 import { ProjectsPage } from './components/Pages/ProjectsPage';
 import { TravelPage } from './components/Pages/TravelPage';
 import { TimelinePage } from './components/Pages/TimelinePage';
-
-// Placeholder components for other pages
-const BlogPage = () => <div>文章分享页面 - 开发中</div>;
-const GuestbookPage = () => <div>留言板页面 - 开发中</div>;
+import { BlogPage } from './components/Pages/BlogPage';
+import { GuestbookPage } from './components/Pages/GuestbookPage';
 
 function App() {
   return (
