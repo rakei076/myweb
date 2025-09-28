@@ -15,7 +15,7 @@ const SidebarContainer = styled.div`
 const Logo = styled(motion.div)`
   width: 50px;
   height: 50px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.55);
   border-radius: ${theme.borderRadius.round};
   display: flex;
   align-items: center;
@@ -23,15 +23,15 @@ const Logo = styled(motion.div)`
   margin-bottom: ${theme.spacing.xl};
   cursor: pointer;
   backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   
   &:hover {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.7);
   }
 `;
 
 const LogoText = styled.span`
-  color: white;
+  color: ${theme.colors.text.primary};
   font-weight: bold;
   font-size: 20px;
   font-family: ${theme.fonts.english};
@@ -47,7 +47,7 @@ const DecorativeElements = styled.div`
 const DecorativeDot = styled(motion.div)<{ delay: number }>`
   width: 8px;
   height: 8px;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.55);
   border-radius: ${theme.borderRadius.round};
 `;
 

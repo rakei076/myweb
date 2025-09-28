@@ -24,6 +24,10 @@ export interface Interest {
   level: number; // 1-5
   description: string;
   achievements?: string[];
+  heroTagline?: string;
+  heroHighlight?: string;
+  heroBackground?: string;
+  heroBackgroundImage?: string;
 }
 
 export interface TravelLocation {

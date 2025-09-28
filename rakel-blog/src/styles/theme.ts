@@ -1,14 +1,14 @@
 export const theme = {
   colors: {
-    primary: '#ffffff',
-    secondary: '#f8f9fa',
-    accent: '#e3f2fd',
-    accentGreen: '#e8f5e8',
-    border: '#dfe6e9',
+    primary: '#f7f7f7', // 主体灰白
+    secondary: '#ededed', // 次级灰白
+    accent: '#cccccc', // 强调色灰
+    accentGreen: '#e0e0e0', // 绿色强调改为浅灰
+    border: '#d1d1d1', // 边框灰
     text: {
-      primary: '#2c3e50',
-      secondary: '#5d6d7e',
-      muted: '#95a5a6'
+      primary: '#232323', // 主文本深灰
+      secondary: '#6b6b6b', // 次文本中灰
+      muted: '#a0a0a0' // 弱化文本浅灰
     }
   },
   fonts: {

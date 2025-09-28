@@ -17,7 +17,7 @@ const LayoutContainer = styled.div`
 
 const LeftSidebar = styled.div`
   width: 80px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(160deg, #e4e4e7 0%, #b9bbc6 55%, #9a9ca8 100%);
   position: relative;
   box-shadow: ${theme.shadows.md};
 
@@ -30,7 +30,7 @@ const LeftSidebar = styled.div`
     transform: translateX(-50%);
     width: 40px;
     height: 6px;
-    background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.4);
     border-radius: 3px;
   }
 
@@ -42,7 +42,7 @@ const LeftSidebar = styled.div`
     transform: translateX(-50%);
     width: 40px;
     height: 6px;
-    background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.28);
     border-radius: 3px;
   }
 `;

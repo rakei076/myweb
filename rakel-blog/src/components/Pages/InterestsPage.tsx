@@ -1,10 +1,11 @@
-import { useState, type FC } from 'react';
+import { useEffect, useMemo, useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
 import { interestsData } from '../../data/interests';
 import type { Interest } from '../../types';
 import * as Icons from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PageContainer = styled.div`
   max-width: 1000px;
@@ -41,9 +42,9 @@ const FilterTabs = styled.div`
 const FilterTab = styled(motion.button)<{ $isActive: boolean }>`
   padding: ${theme.spacing.md} ${theme.spacing.lg};
   border-radius: ${theme.borderRadius.lg};
-  background-color: ${props => props.$isActive ? theme.colors.accent : theme.colors.secondary};
-  color: ${props => props.$isActive ? theme.colors.text.primary : theme.colors.text.secondary};
-  font-weight: ${props => props.$isActive ? '600' : '400'};
+  background-color: ${props => (props.$isActive ? theme.colors.accent : theme.colors.secondary)};
+  color: ${props => (props.$isActive ? theme.colors.text.primary : theme.colors.text.secondary)};
+  font-weight: ${props => (props.$isActive ? '600' : '400')};
   transition: all 0.3s ease;
   font-size: 1rem;
 
@@ -53,124 +54,254 @@ const FilterTab = styled(motion.button)<{ $isActive: boolean }>`
   }
 `;
 
-const InterestsGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: ${theme.spacing.xl};
-`;
-
-const InterestCard = styled(motion.div)`
-  background-color: ${theme.colors.secondary};
-  border-radius: ${theme.borderRadius.lg};
-  padding: ${theme.spacing.xl};
-  box-shadow: ${theme.shadows.sm};
-  cursor: pointer;
+const CarouselContainer = styled.div`
   position: relative;
-  overflow: hidden;
+  height: 520px;
+  margin-bottom: ${theme.spacing.xl};
 
-  &:hover {
-    box-shadow: ${theme.shadows.md};
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    height: 460px;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    height: 420px;
   }
 `;
 
-const CategoryBadge = styled.div<{ $category: Interest['category'] }>`
+const PosterCard = styled(motion.div)<{ $background: string; $image?: string }>`
   position: absolute;
-  top: ${theme.spacing.md};
-  right: ${theme.spacing.md};
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.md};
-  font-size: 0.8rem;
-  font-weight: 600;
-  background-color: ${props => {
-    switch (props.$category) {
-      case 'game': return '#FFE4E1';
-      case 'tech': return '#E3F2FD';
-      case 'life': return '#E8F5E8';
-      default: return theme.colors.accent;
-    }
-  }};
-  color: ${props => {
-    switch (props.$category) {
-      case 'game': return '#D32F2F';
-      case 'tech': return '#1976D2';
-      case 'life': return '#388E3C';
-      default: return theme.colors.text.primary;
-    }
-  }};
-`;
-
-const IconWrapper = styled.div`
-  width: 60px;
-  height: 60px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  inset: 0;
   border-radius: ${theme.borderRadius.lg};
+  background: ${({ $background, $image }) => $image ? `url(${$image}) center / cover no-repeat` : $background};
+  color: #f9fbff;
+  box-shadow: 0 24px 40px rgba(15, 26, 67, 0.25);
+  overflow: hidden;
+  padding: ${theme.spacing.xl};
   display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: ${theme.spacing.lg};
-  color: white;
+  flex-direction: column;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      ${({ $background }) => $background},
+      radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.3), transparent 55%),
+      radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.25), transparent 60%),
+      linear-gradient(135deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.55));
+    opacity: 0.7;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: ${theme.spacing.lg};
+  }
 `;
 
-const InterestName = styled.h3`
-  font-size: 1.3rem;
-  color: ${theme.colors.text.primary};
-  margin-bottom: ${theme.spacing.md};
-`;
-
-const InterestDescription = styled.p`
-  color: ${theme.colors.text.secondary};
-  line-height: 1.6;
-  margin-bottom: ${theme.spacing.lg};
-  font-size: 0.95rem;
-`;
-
-const SkillLevel = styled.div`
-  margin-bottom: ${theme.spacing.lg};
-`;
-
-const SkillLevelLabel = styled.div`
+const PosterTopRow = styled.div`
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: ${theme.spacing.sm};
 `;
 
-const LevelText = styled.span`
-  font-size: 0.9rem;
-  color: ${theme.colors.text.secondary};
-`;
-
-const LevelValue = styled.span`
+const PosterBadge = styled.div`
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   font-weight: 600;
-  color: ${theme.colors.text.primary};
+  backdrop-filter: blur(6px);
 `;
 
-const ProgressBar = styled.div`
-  width: 100%;
-  height: 8px;
-  background-color: ${theme.colors.border};
-  border-radius: 4px;
-  overflow: hidden;
+const PosterIcon = styled.div`
+  width: 56px;
+  height: 56px;
+  border-radius: ${theme.borderRadius.round};
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 6px 14px rgba(12, 19, 51, 0.35);
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    width: 48px;
+    height: 48px;
+  }
 `;
 
-const ProgressFill = styled(motion.div)<{ $level: number }>`
-  height: 100%;
-  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-  border-radius: 4px;
+const PosterContent = styled.div`
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: ${theme.spacing.lg};
+  padding: 0 ${theme.spacing.xl};
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    padding: 0 ${theme.spacing.md};
+  }
 `;
 
-const AchievementsList = styled.div`
+const PosterTitle = styled.h2`
+  font-size: 3rem;
+  margin: 0;
+  letter-spacing: 0.04em;
+  text-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 2.4rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 2rem;
+  }
+`;
+
+const PosterTagline = styled.p`
+  font-size: 1.4rem;
+  max-width: 620px;
+  line-height: 1.6;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    font-size: 1.05rem;
+  }
+`;
+
+const PosterHighlight = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+`;
+
+const PosterDescription = styled.p`
+  margin: 0;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+`;
+
+const PosterFooter = styled.div`
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.sm};
+  background: rgba(10, 16, 40, 0.25);
+  border-radius: ${theme.borderRadius.md};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  backdrop-filter: blur(6px);
+  align-self: flex-start;
+`;
+
+const FooterLabel = styled.span`
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+`;
+
+const AchievementRow = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: ${theme.spacing.sm};
 `;
 
-const AchievementTag = styled.span`
+const AchievementChip = styled.span`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
-  background-color: ${theme.colors.accent};
-  color: ${theme.colors.text.secondary};
   border-radius: ${theme.borderRadius.md};
-  font-size: 0.8rem;
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+`;
+
+const NavigationButton = styled.button<{ $position: 'left' | 'right' }>`
+  position: absolute;
+  top: 50%;
+  ${props => (props.$position === 'left' ? 'left: -28px;' : 'right: -28px;')}
+  transform: translateY(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: ${theme.borderRadius.round};
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(10, 16, 40, 0.3);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 18px 28px rgba(15, 26, 67, 0.3);
+  transition: transform 0.25s ease, background 0.25s ease;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.05);
+    background: rgba(10, 16, 40, 0.55);
+  }
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    width: 46px;
+    height: 46px;
+    ${props => (props.$position === 'left' ? 'left: -10px;' : 'right: -10px;')}
+  }
+
+  @media (max-width: ${theme.breakpoints.mobile}) {
+    display: none;
+  }
+`;
+
+const Indicators = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: ${theme.spacing.sm};
+`;
+
+const IndicatorDot = styled.button<{ $active: boolean }>`
+  width: ${props => (props.$active ? '36px' : '12px')};
+  height: 12px;
+  border-radius: 999px;
+  background: ${props => (props.$active ? '#1f7bff' : 'rgba(13, 31, 64, 0.2)')};
+  border: none;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:hover {
+    background: #1f7bff;
+  }
+`;
+
+const EmptyState = styled.div`
+  text-align: center;
+  padding: ${theme.spacing.xxl};
+  color: ${theme.colors.text.secondary};
 `;
 
 const categoryLabels = {
@@ -180,16 +311,99 @@ const categoryLabels = {
   life: '生活'
 };
 
+const categoryGradients: Record<Interest['category'], string> = {
+  game: 'linear-gradient(135deg, #142044 0%, #383a8b 100%)',
+  tech: 'linear-gradient(135deg, #0a1d2f 0%, #144a7a 100%)',
+  life: 'linear-gradient(135deg, #12352f 0%, #3c8d71 100%)'
+};
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 120 : -120,
+    opacity: 0,
+    scale: 0.96
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    scale: 1
+  },
+  exit: (direction: number) => ({
+    x: direction < 0 ? 120 : -120,
+    opacity: 0,
+    scale: 0.96
+  })
+};
+
+const swipeThreshold = 120;
+const swipeVelocity = 600;
+
+const interestBackgroundModules = import.meta.glob('../../assets/interests/*', {
+  eager: true,
+  import: 'default'
+}) as Record<string, string>;
+
+const resolveBackgroundImage = (fileName?: string) => {
+  if (!fileName) return undefined;
+  const key = `../../assets/interests/${fileName}`;
+  return interestBackgroundModules[key];
+};
+
 export const InterestsPage: FC = () => {
   const [activeFilter, setActiveFilter] = useState<'all' | Interest['category']>('all');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  const filteredInterests = activeFilter === 'all' 
-    ? interestsData 
-    : interestsData.filter(interest => interest.category === activeFilter);
+  const filteredInterests = useMemo(
+    () => (activeFilter === 'all' ? interestsData : interestsData.filter(interest => interest.category === activeFilter)),
+    [activeFilter]
+  );
 
-  const getIcon = (iconName: string) => {
-    const IconComponent = (Icons as any)[iconName];
-    return IconComponent ? <IconComponent size={24} /> : null;
+  useEffect(() => {
+    setCurrentIndex(0);
+    setDirection(0);
+  }, [activeFilter]);
+
+  useEffect(() => {
+    if (currentIndex >= filteredInterests.length) {
+      setCurrentIndex(0);
+      setDirection(0);
+    }
+  }, [filteredInterests.length, currentIndex]);
+
+  const paginate = (newDirection: number) => {
+    if (filteredInterests.length === 0) return;
+
+    setDirection(newDirection);
+    setCurrentIndex(prev => {
+      const nextIndex = prev + newDirection;
+      if (nextIndex < 0) {
+        return filteredInterests.length - 1;
+      }
+      if (nextIndex >= filteredInterests.length) {
+        return 0;
+      }
+      return nextIndex;
+    });
+  };
+
+  const handleDragEnd = (_event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    if (info.offset.x > swipeThreshold || info.velocity.x > swipeVelocity) {
+      paginate(-1);
+      return;
+    }
+
+    if (info.offset.x < -swipeThreshold || info.velocity.x < -swipeVelocity) {
+      paginate(1);
+    }
+  };
+
+  const currentInterest = filteredInterests[currentIndex];
+  const currentBackgroundImage = resolveBackgroundImage(currentInterest?.heroBackgroundImage);
+
+  const getIcon = (iconName: string, size = 28) => {
+    const IconComponent = (Icons as Record<string, any>)[iconName];
+    return IconComponent ? <IconComponent size={size} /> : null;
   };
 
   return (
@@ -201,8 +415,7 @@ export const InterestsPage: FC = () => {
       >
         <Title>兴趣爱好</Title>
         <Subtitle>
-          这里记录了我在游戏、技术和生活方面的各种兴趣爱好，
-          以及在这些领域的熟练程度和小小成就。
+          把每一份热爱的瞬间做成海报，用最沉浸的方式记录我的游戏、技术与生活灵感。
         </Subtitle>
       </Header>
 
@@ -220,57 +433,80 @@ export const InterestsPage: FC = () => {
         ))}
       </FilterTabs>
 
-      <AnimatePresence mode="wait">
-        <InterestsGrid>
-          {filteredInterests.map((interest, index) => (
-            <InterestCard
-              key={interest.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ 
-                scale: 1.02,
-                transition: { type: "spring", stiffness: 300 }
-              }}
-            >
-              <CategoryBadge $category={interest.category}>
-                {categoryLabels[interest.category]}
-              </CategoryBadge>
-              
-              <IconWrapper>
-                {getIcon(interest.icon)}
-              </IconWrapper>
-              
-              <InterestName>{interest.name}</InterestName>
-              <InterestDescription>{interest.description}</InterestDescription>
-              
-              <SkillLevel>
-                <SkillLevelLabel>
-                  <LevelText>熟练程度</LevelText>
-                  <LevelValue>{interest.level}/5</LevelValue>
-                </SkillLevelLabel>
-                <ProgressBar>
-                  <ProgressFill
-                    $level={interest.level}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(interest.level / 5) * 100}%` }}
-                    transition={{ delay: index * 0.1 + 0.3, duration: 0.8 }}
-                  />
-                </ProgressBar>
-              </SkillLevel>
-              
-              {interest.achievements && interest.achievements.length > 0 && (
-                <AchievementsList>
-                  {interest.achievements.map((achievement, i) => (
-                    <AchievementTag key={i}>{achievement}</AchievementTag>
-                  ))}
-                </AchievementsList>
+      {filteredInterests.length === 0 ? (
+        <EmptyState>这个分类暂时还没有内容，换一个标签看看吧。</EmptyState>
+      ) : (
+        <>
+          <CarouselContainer>
+            <NavigationButton $position="left" type="button" onClick={() => paginate(-1)} aria-label="切换上一项">
+              <ChevronLeft size={24} />
+            </NavigationButton>
+            <NavigationButton $position="right" type="button" onClick={() => paginate(1)} aria-label="切换下一项">
+              <ChevronRight size={24} />
+            </NavigationButton>
+
+            <AnimatePresence custom={direction} initial={false} mode="wait">
+              {currentInterest && (
+                <PosterCard
+                  key={currentInterest.id}
+                  $background={currentInterest.heroBackground ?? categoryGradients[currentInterest.category]}
+                  $image={currentBackgroundImage}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.55, ease: 'easeOut' }}
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={0.2}
+                  onDragEnd={handleDragEnd}
+                >
+                  <PosterTopRow>
+                    <PosterBadge>{categoryLabels[currentInterest.category]}</PosterBadge>
+                    <PosterIcon>{getIcon(currentInterest.icon, 28)}</PosterIcon>
+                  </PosterTopRow>
+
+                  <PosterContent>
+                    <PosterTitle>{currentInterest.name}</PosterTitle>
+                    {currentInterest.heroTagline && <PosterTagline>{currentInterest.heroTagline}</PosterTagline>}
+                    {currentInterest.heroHighlight && <PosterHighlight>{currentInterest.heroHighlight}</PosterHighlight>}
+                    <PosterDescription>{currentInterest.description}</PosterDescription>
+                  </PosterContent>
+
+                  {currentInterest.achievements && currentInterest.achievements.length > 0 && (
+                    <PosterFooter>
+                      <FooterLabel>闪光瞬间</FooterLabel>
+                      <AchievementRow>
+                        {currentInterest.achievements.map((achievement, index) => (
+                          <AchievementChip key={`${currentInterest.id}-achievement-${index}`}>
+                            {achievement}
+                          </AchievementChip>
+                        ))}
+                      </AchievementRow>
+                    </PosterFooter>
+                  )}
+                </PosterCard>
               )}
-            </InterestCard>
-          ))}
-        </InterestsGrid>
-      </AnimatePresence>
+            </AnimatePresence>
+          </CarouselContainer>
+
+          <Indicators>
+            {filteredInterests.map((interest, index) => (
+              <IndicatorDot
+                key={interest.id}
+                $active={index === currentIndex}
+                onClick={() => {
+                  if (index === currentIndex) return;
+                  setDirection(index > currentIndex ? 1 : -1);
+                  setCurrentIndex(index);
+                }}
+                aria-label={`查看 ${interest.name}`}
+              />
+            ))}
+          </Indicators>
+        </>
+      )}
     </PageContainer>
   );
 };
