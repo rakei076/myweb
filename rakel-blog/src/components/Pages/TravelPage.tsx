@@ -5,7 +5,30 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { travelData } from '../../data/travel';
 import type { TravelLocation } from '../../types';
 import { Globe } from '../3D/Globe';
-import { MapPin, Calendar, Camera, Heart, X } from 'lucide-react';
+import { MapPin, Calendar, Heart, X } from 'lucide-react';
+
+const travelPhotoImports = import.meta.glob('../../assets/travel/*', {
+  eager: true,
+  import: 'default'
+}) as Record<string, string>;
+
+const resolveTravelPhoto = (path?: string) => {
+  if (!path) return '';
+
+  const fileName = path.split('/').pop() ?? path;
+  const candidates = new Set<string>([
+    `../../assets/travel/${fileName}`,
+    path.startsWith('../../assets/travel/') ? path : ''
+  ]);
+
+  for (const key of candidates) {
+    if (key && travelPhotoImports[key]) {
+      return travelPhotoImports[key];
+    }
+  }
+
+  return path;
+};
 
 const PageContainer = styled.div`
   max-width: 1200px;
@@ -63,19 +86,54 @@ const LocationsTimeline = styled.div`
   gap: ${theme.spacing.xl};
 `;
 
-const TimelineItem = styled(motion.div)<{ $isSelected: boolean }>`
+const TimelineItem = styled(motion.div)<{ $isSelected: boolean; $backgroundImage?: string; $accentColor?: string }>`
+  position: relative;
   display: flex;
   gap: ${theme.spacing.lg};
   padding: ${theme.spacing.xl};
-  background-color: ${props => props.$isSelected ? theme.colors.accent : theme.colors.secondary};
+  background-color: ${theme.colors.secondary};
   border-radius: ${theme.borderRadius.lg};
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 2px solid ${props => props.$isSelected ? props.color || theme.colors.accent : 'transparent'};
+  transition: all 0.35s ease;
+  border: 2px solid ${props => props.$isSelected ? props.$accentColor || theme.colors.accent : 'transparent'};
+  overflow: hidden;
+  color: ${theme.colors.text.primary};
+  box-shadow: ${theme.shadows.md};
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: ${props => props.$backgroundImage ? `url(${props.$backgroundImage})` : 'none'};
+    background-size: cover;
+    background-position: center;
+    opacity: ${props => props.$backgroundImage ? 0.6 : 0};
+    transition: opacity 0.35s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.82) 45%, rgba(255, 255, 255, 0.55) 100%);
+    transition: background 0.35s ease;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
 
   &:hover {
-    background-color: ${theme.colors.accent};
-    transform: translateX(4px);
+    transform: translateX(6px);
+  }
+
+  &:hover::before {
+    opacity: ${props => props.$backgroundImage ? 0.7 : 0};
+  }
+
+  &:hover::after {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.96) 0%, rgba(255, 255, 255, 0.86) 45%, rgba(255, 255, 255, 0.62) 100%);
   }
 `;
 
@@ -131,26 +189,63 @@ const LocationDescription = styled.p`
   margin-bottom: ${theme.spacing.lg};
 `;
 
-const PhotoGrid = styled.div`
+const PhotoStrip = styled.div`
   display: flex;
   gap: ${theme.spacing.md};
-  flex-wrap: wrap;
+  overflow-x: auto;
+  padding-bottom: ${theme.spacing.sm};
+
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(120, 120, 120, 0.4);
+    border-radius: 9999px;
+  }
 `;
 
-const PhotoPlaceholder = styled.div`
-  width: 80px;
-  height: 60px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+const PhotoThumbnail = styled.button`
+  position: relative;
+  width: 120px;
+  height: 80px;
   border-radius: ${theme.borderRadius.md};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  cursor: pointer;
-  transition: transform 0.3s ease;
+  overflow: hidden;
+  box-shadow: ${theme.shadows.sm};
+  flex-shrink: 0;
+  background-color: rgba(0, 0, 0, 0.08);
+  border: none;
+  padding: 0;
+  cursor: zoom-in;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+  }
 
   &:hover {
+    transform: translateY(-2px);
+    box-shadow: ${theme.shadows.md};
+  }
+
+  &:hover img {
     transform: scale(1.05);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.accent};
+    outline-offset: 3px;
   }
 `;
 
@@ -211,9 +306,39 @@ const ModalDescription = styled.p`
   font-size: 1.1rem;
 `;
 
+const PhotoModalContent = styled(motion.div)`
+  background-color: ${theme.colors.primary};
+  border-radius: ${theme.borderRadius.lg};
+  padding: ${theme.spacing.xl};
+  max-width: min(960px, 90vw);
+  width: 100%;
+  position: relative;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing.md};
+`;
+
+const PhotoModalImage = styled.img`
+  width: 100%;
+  height: auto;
+  max-height: calc(90vh - 140px);
+  object-fit: contain;
+  border-radius: ${theme.borderRadius.md};
+  box-shadow: ${theme.shadows.lg};
+`;
+
+const PhotoModalCaption = styled.p`
+  margin: 0;
+  color: ${theme.colors.text.secondary};
+  font-size: 0.95rem;
+  line-height: 1.6;
+`;
+
 export const TravelPage: FC = () => {
   const [selectedLocation, setSelectedLocation] = useState<TravelLocation | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [photoModal, setPhotoModal] = useState<{ src: string; alt: string } | null>(null);
 
   const handleLocationClick = (location: TravelLocation) => {
     setSelectedLocation(location);
@@ -227,6 +352,14 @@ export const TravelPage: FC = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedLocation(null), 300);
+  };
+
+  const openPhotoModal = (photo: string, alt: string) => {
+    setPhotoModal({ src: photo, alt });
+  };
+
+  const closePhotoModal = () => {
+    setPhotoModal(null);
   };
 
   useEffect(() => {
@@ -277,11 +410,14 @@ export const TravelPage: FC = () => {
       </GlobeContainer>
 
       <LocationsTimeline>
-        {travelData.map((location, index) => (
+        {travelData.map((location, index) => {
+          const coverPhoto = resolveTravelPhoto(location.photos[0]);
+          return (
           <TimelineItem
             key={location.id}
             $isSelected={selectedLocation?.id === location.id}
-            color={location.color}
+              $accentColor={location.color}
+            $backgroundImage={coverPhoto}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
@@ -309,17 +445,30 @@ export const TravelPage: FC = () => {
               <LocationDescription>
                 {location.description}
               </LocationDescription>
-              
-              <PhotoGrid>
-                {location.photos.map((photo, i) => (
-                  <PhotoPlaceholder key={`${location.id}-${photo}-${i}`} title={photo}>
-                    <Camera size={20} />
-                  </PhotoPlaceholder>
-                ))}
-              </PhotoGrid>
+
+              <PhotoStrip>
+                {location.photos.map((photo, i) => {
+                  const resolved = resolveTravelPhoto(photo);
+                  const alt = `${location.name} 倩影 ${i + 1}`;
+                  return (
+                    <PhotoThumbnail
+                      key={`${location.id}-${photo}-${i}`}
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        openPhotoModal(resolved, alt);
+                      }}
+                      aria-label={`查看${alt}大图`}
+                    >
+                      <img src={resolved} alt={alt} loading="lazy" />
+                    </PhotoThumbnail>
+                  );
+                })}
+              </PhotoStrip>
             </LocationContent>
           </TimelineItem>
-        ))}
+        );
+        })}
       </LocationsTimeline>
 
       <AnimatePresence>
@@ -360,6 +509,30 @@ export const TravelPage: FC = () => {
                 </MetaItem>
               </div>
             </ModalContent>
+          </Modal>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {photoModal && (
+          <Modal
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closePhotoModal}
+          >
+            <PhotoModalContent
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              onClick={(event) => event.stopPropagation()}
+            >
+              <CloseButton onClick={closePhotoModal}>
+                <X size={20} />
+              </CloseButton>
+              <PhotoModalImage src={photoModal.src} alt={photoModal.alt} />
+              <PhotoModalCaption>{photoModal.alt}</PhotoModalCaption>
+            </PhotoModalContent>
           </Modal>
         )}
       </AnimatePresence>

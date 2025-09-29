@@ -120,7 +120,7 @@ export const interestsData: Interest[] = [
     heroTagline: '用脚步丈量世界，用镜头收集故事',
     heroHighlight: '随手纪录 · 收藏地图针',
     heroBackground: 'linear-gradient(135deg, #0a2a3a 0%, #114b5f 45%, #88d498 100%)',
-    heroBackgroundImage: 'travel.jpg',
+    heroBackgroundImage: 'travel.JPG',
     achievements: ['多国旅行', '文化体验者', '摄影爱好']
   },
   {

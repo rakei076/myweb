@@ -29,7 +29,7 @@ export const travelData: TravelLocation[] = [
     country: '法国・意大利等',
     coordinates: [10.0, 50.0],
     visitDate: '2018-02-10',
-    photos: ['/images/travel/europe1.jpg'],
+    photos: ['巴黎.jpg', '意大利.jpg'],
     description: '寒假跟随家人走访巴黎、罗马等城市，博物馆与教堂的艺术细节让人震撼。',
     mood: '震撼',
     color: '#8899C4'
@@ -40,7 +40,7 @@ export const travelData: TravelLocation[] = [
     country: '美国',
     coordinates: [-74.006, 40.7128],
     visitDate: '2019-01-28',
-    photos: ['/images/travel/usa1.jpg'],
+    photos: ['白宫.jpg', '美国水库.jpg'],
     description: '第一次踏上北美大陆，漫步纽约街头，感受东西方文化的碰撞。',
     mood: '兴奋',
     color: '#FF6B6B'
@@ -106,7 +106,7 @@ export const travelData: TravelLocation[] = [
     country: '日本',
     coordinates: [135.7681, 35.0116],
     visitDate: '2025-01-08',
-    photos: ['/images/travel/japan-route-2025.jpg'],
+    photos: ['travel.JPG'],
     description: '寒假里完成的本州纵贯之旅，从京都的古朴到名古屋的工业，再到东京的摩天线，感受截然不同的城市节奏。',
     mood: '充实',
     color: '#6376FF'

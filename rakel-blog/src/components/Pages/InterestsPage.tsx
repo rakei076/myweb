@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion, AnimatePresence, type PanInfo } from 'framer-motion';
@@ -7,8 +7,9 @@ import type { Interest } from '../../types';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PageContainer = styled.div`
-  max-width: 1000px;
+  max-width: 1100px;
   margin: 0 auto;
+  padding: 0 ${theme.spacing.xl};
 `;
 
 const Header = styled(motion.div)`
@@ -22,40 +23,10 @@ const Title = styled.h1`
   margin-bottom: ${theme.spacing.md};
 `;
 
-const Subtitle = styled.p`
-  font-size: 1.1rem;
-  color: ${theme.colors.text.secondary};
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
-`;
-
-const FilterTabs = styled.div`
-  display: flex;
-  justify-content: center;
-  gap: ${theme.spacing.md};
-  margin-bottom: ${theme.spacing.xl};
-  flex-wrap: wrap;
-`;
-
-const FilterTab = styled(motion.button)<{ $isActive: boolean }>`
-  padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border-radius: ${theme.borderRadius.lg};
-  background-color: ${props => (props.$isActive ? theme.colors.accent : theme.colors.secondary)};
-  color: ${props => (props.$isActive ? theme.colors.text.primary : theme.colors.text.secondary)};
-  font-weight: ${props => (props.$isActive ? '600' : '400')};
-  transition: all 0.3s ease;
-  font-size: 1rem;
-
-  &:hover {
-    background-color: ${theme.colors.accent};
-    color: ${theme.colors.text.primary};
-  }
-`;
 
 const FullBleed = styled.div`
-  margin-left: calc(-1 * ${theme.spacing.xxl});
-  margin-right: calc(-1 * ${theme.spacing.xxl});
+  margin-left: calc(-1 * ${theme.spacing.xl});
+  margin-right: calc(-1 * ${theme.spacing.xl});
 
   @media (max-width: ${theme.breakpoints.tablet}) {
     margin-left: calc(-1 * ${theme.spacing.lg});
@@ -70,22 +41,26 @@ const FullBleed = styled.div`
 
 const CarouselContainer = styled.div`
   position: relative;
-  height: 520px;
-  margin-bottom: ${theme.spacing.lg};
+  height: clamp(520px, 60vh, 640px);
+  margin-bottom: ${theme.spacing.xl};
+  padding: 0 ${theme.spacing.xl};
+  overflow: hidden;
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    height: 460px;
+    height: clamp(460px, 58vh, 560px);
+    padding: 0 ${theme.spacing.lg};
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    height: 420px;
+    height: clamp(380px, 55vh, 480px);
+    padding: 0 ${theme.spacing.md};
   }
 `;
 
 const PosterCard = styled(motion.div)<{ $background: string; $image?: string }>`
   position: absolute;
   inset: 0;
-  border-radius: 0;
+  border-radius: ${theme.borderRadius.lg};
   background: ${({ $background, $image }) => $image ? `url(${$image}) center / cover no-repeat` : $background};
   color: #f9fbff;
   box-shadow: none;
@@ -100,8 +75,8 @@ const PosterCard = styled(motion.div)<{ $background: string; $image?: string }>`
     inset: 0;
     background:
       ${({ $background }) => $background},
-      linear-gradient(140deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.55));
-    opacity: 0.6;
+      linear-gradient(140deg, rgba(8, 12, 20, 0.15), rgba(8, 12, 20, 0.55));
+    opacity: 0.45;
     z-index: 0;
     pointer-events: none;
   }
@@ -114,42 +89,75 @@ const PosterCard = styled(motion.div)<{ $background: string; $image?: string }>`
 const PosterContent = styled.div`
   position: relative;
   z-index: 1;
-  flex: 1;
+  height: 100%;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: ${theme.spacing.md};
   padding: ${theme.spacing.xxl};
   text-align: left;
 
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    padding: ${theme.spacing.xl};
+  }
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.lg};
+    gap: ${theme.spacing.md};
   }
 `;
 
 const PosterTitle = styled.h2`
-  font-size: clamp(2.8rem, 6vw, 4.2rem);
+  font-size: clamp(2.6rem, 5vw, 4rem);
   margin: 0;
   letter-spacing: 0.05em;
   color: #ffffff;
   text-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
 
   @media (max-width: ${theme.breakpoints.tablet}) {
-    font-size: 2.4rem;
+    font-size: 2.6rem;
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
-    font-size: 2rem;
+    font-size: 2.1rem;
   }
 `;
+
+const PosterTagline = styled.p`
+  margin: 0;
+  font-size: clamp(1.05rem, 2.3vw, 1.4rem);
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+`;
+
+const PosterDescription = styled.p`
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(235, 239, 245, 0.85);
+`;
+
+const PosterHighlight = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.02em;
+`;
+
 
 const NavigationButton = styled.button<{ $position: 'left' | 'right' }>`
   position: absolute;
   top: 50%;
   z-index: 2;
-  ${props => (props.$position === 'left' ? 'left: -64px;' : 'right: -64px;')}
+  ${props => (props.$position === 'left' ? `left: ${theme.spacing.lg};` : `right: ${theme.spacing.lg};`)}
   transform: translateY(-50%);
-  width: 56px;
-  height: 56px;
+  width: 54px;
+  height: 54px;
   border-radius: ${theme.borderRadius.round};
   border: 1px solid rgba(255, 255, 255, 0.35);
   background: rgba(15, 20, 30, 0.32);
@@ -169,7 +177,7 @@ const NavigationButton = styled.button<{ $position: 'left' | 'right' }>`
   @media (max-width: ${theme.breakpoints.tablet}) {
     width: 46px;
     height: 46px;
-    ${props => (props.$position === 'left' ? 'left: -24px;' : 'right: -24px;')}
+    ${props => (props.$position === 'left' ? `left: ${theme.spacing.md};` : `right: ${theme.spacing.md};`)}
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -204,13 +212,6 @@ const EmptyState = styled.div`
   color: ${theme.colors.text.secondary};
 `;
 
-const categoryLabels = {
-  all: '全部',
-  game: '游戏',
-  tech: '技术',
-  life: '生活'
-};
-
 const categoryGradients: Record<Interest['category'], string> = {
   game: 'linear-gradient(135deg, #142044 0%, #383a8b 100%)',
   tech: 'linear-gradient(135deg, #0a1d2f 0%, #144a7a 100%)',
@@ -238,49 +239,62 @@ const slideVariants = {
 const swipeThreshold = 120;
 const swipeVelocity = 600;
 
-const interestBackgroundModules = import.meta.glob('../../assets/interests/*', {
-  eager: true,
-  import: 'default'
-}) as Record<string, string>;
+const interestBackgroundModules = {
+  ...import.meta.glob('../../assets/interests/*', {
+    eager: true,
+    import: 'default'
+  }),
+  ...import.meta.glob('../../assets/travel/*', {
+    eager: true,
+    import: 'default'
+  })
+} as Record<string, string>;
 
 const resolveBackgroundImage = (fileName?: string) => {
   if (!fileName) return undefined;
-  const key = `../../assets/interests/${fileName}`;
-  return interestBackgroundModules[key];
+  const possibleKeys = [
+    `../../assets/interests/${fileName}`,
+    `../../assets/travel/${fileName}`
+  ];
+
+  for (const key of possibleKeys) {
+    if (interestBackgroundModules[key]) {
+      return interestBackgroundModules[key];
+    }
+  }
+
+  return undefined;
 };
 
 export const InterestsPage: FC = () => {
-  const [activeFilter, setActiveFilter] = useState<'all' | Interest['category']>('all');
+  const interestsList: Interest[] = interestsData;
+  const totalCount = interestsList.length;
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  const filteredInterests = useMemo(
-    () => (activeFilter === 'all' ? interestsData : interestsData.filter(interest => interest.category === activeFilter)),
-    [activeFilter]
-  );
-
   useEffect(() => {
-    setCurrentIndex(0);
-    setDirection(0);
-  }, [activeFilter]);
+    if (totalCount === 0) {
+      setCurrentIndex(0);
+      setDirection(0);
+      return;
+    }
 
-  useEffect(() => {
-    if (currentIndex >= filteredInterests.length) {
+    if (currentIndex >= totalCount) {
       setCurrentIndex(0);
       setDirection(0);
     }
-  }, [filteredInterests.length, currentIndex]);
+  }, [totalCount, currentIndex]);
 
   const paginate = (newDirection: number) => {
-    if (filteredInterests.length === 0) return;
+    if (totalCount === 0) return;
 
     setDirection(newDirection);
-    setCurrentIndex(prev => {
-      const nextIndex = prev + newDirection;
+    setCurrentIndex(prevIndex => {
+      const nextIndex = prevIndex + newDirection;
       if (nextIndex < 0) {
-        return filteredInterests.length - 1;
+        return totalCount - 1;
       }
-      if (nextIndex >= filteredInterests.length) {
+      if (nextIndex >= totalCount) {
         return 0;
       }
       return nextIndex;
@@ -298,7 +312,7 @@ export const InterestsPage: FC = () => {
     }
   };
 
-  const currentInterest = filteredInterests[currentIndex];
+  const currentInterest = totalCount > 0 ? interestsList[currentIndex] : null;
   const currentBackgroundImage = resolveBackgroundImage(currentInterest?.heroBackgroundImage);
 
   return (
@@ -309,64 +323,56 @@ export const InterestsPage: FC = () => {
         transition={{ duration: 0.6 }}
       >
         <Title>{currentInterest?.name ?? '兴趣'}</Title>
-        <Subtitle>左右滑动或点击指示点切换不同兴趣。</Subtitle>
       </Header>
 
-      <FilterTabs>
-        {Object.entries(categoryLabels).map(([key, label]) => (
-          <FilterTab
-            key={key}
-            $isActive={activeFilter === key}
-            onClick={() => setActiveFilter(key as any)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            {label}
-          </FilterTab>
-        ))}
-      </FilterTabs>
-
-      {filteredInterests.length === 0 ? (
-        <EmptyState>这个分类暂时还没有内容，换一个标签看看吧。</EmptyState>
+      {totalCount === 0 ? (
+        <EmptyState>这里暂时还没有内容，稍后再来看看吧。</EmptyState>
       ) : (
         <>
           <FullBleed>
             <CarouselContainer>
-            <NavigationButton $position="left" type="button" onClick={() => paginate(-1)} aria-label="切换上一项">
-              <ChevronLeft size={24} />
-            </NavigationButton>
-            <NavigationButton $position="right" type="button" onClick={() => paginate(1)} aria-label="切换下一项">
-              <ChevronRight size={24} />
-            </NavigationButton>
+              <NavigationButton $position="left" type="button" onClick={() => paginate(-1)} aria-label="切换上一项">
+                <ChevronLeft size={24} />
+              </NavigationButton>
+              <NavigationButton $position="right" type="button" onClick={() => paginate(1)} aria-label="切换下一项">
+                <ChevronRight size={24} />
+              </NavigationButton>
 
-            <AnimatePresence custom={direction} initial={false} mode="wait">
-              {currentInterest && (
-                <PosterCard
-                  key={currentInterest.id}
-                  $background={currentInterest.heroBackground ?? categoryGradients[currentInterest.category]}
-                  $image={currentBackgroundImage}
-                  custom={direction}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{ duration: 0.55, ease: 'easeOut' }}
-                  drag="x"
-                  dragConstraints={{ left: 0, right: 0 }}
-                  dragElastic={0.2}
-                  onDragEnd={handleDragEnd}
-                >
-                  <PosterContent>
-                    <PosterTitle>{currentInterest.name}</PosterTitle>
-                  </PosterContent>
-                </PosterCard>
-              )}
-            </AnimatePresence>
+              <AnimatePresence custom={direction} initial={false} mode="wait">
+                {currentInterest && (
+                  <PosterCard
+                    key={currentInterest.id}
+                    $background={currentInterest.heroBackground ?? categoryGradients[currentInterest.category]}
+                    $image={currentBackgroundImage}
+                    custom={direction}
+                    variants={slideVariants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ duration: 0.55, ease: 'easeOut' }}
+                    drag="x"
+                    dragConstraints={{ left: 0, right: 0 }}
+                    dragElastic={0.2}
+                    onDragEnd={handleDragEnd}
+                  >
+                    <PosterContent>
+                      <PosterTitle>{currentInterest.name}</PosterTitle>
+                      {currentInterest.heroTagline && (
+                        <PosterTagline>{currentInterest.heroTagline}</PosterTagline>
+                      )}
+                      {currentInterest.heroHighlight && (
+                        <PosterHighlight>{currentInterest.heroHighlight}</PosterHighlight>
+                      )}
+                      <PosterDescription>{currentInterest.description}</PosterDescription>
+                    </PosterContent>
+                  </PosterCard>
+                )}
+              </AnimatePresence>
             </CarouselContainer>
           </FullBleed>
 
           <Indicators>
-            {filteredInterests.map((interest, index) => (
+            {interestsList.map((interest: Interest, index) => (
               <IndicatorDot
                 key={interest.id}
                 $active={index === currentIndex}
