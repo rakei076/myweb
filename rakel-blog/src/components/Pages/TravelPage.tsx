@@ -5,15 +5,21 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { travelData } from '../../data/travel';
 import type { TravelLocation } from '../../types';
 import { Globe } from '../3D/Globe';
-import { MapPin, Calendar, Heart, X } from 'lucide-react';
+import { MapPin, Calendar, X } from 'lucide-react';
 
 const travelPhotoImports = import.meta.glob('../../assets/travel/*', {
   eager: true,
   import: 'default'
 }) as Record<string, string>;
 
-const resolveTravelPhoto = (path?: string) => {
-  if (!path) return '';
+const resolveTravelPhoto = (path?: string): string | null => {
+  if (!path) {
+    return null;
+  }
+
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
 
   const fileName = path.split('/').pop() ?? path;
   const candidates = new Set<string>([
@@ -27,7 +33,7 @@ const resolveTravelPhoto = (path?: string) => {
     }
   }
 
-  return path;
+  return null;
 };
 
 const PageContainer = styled.div`
@@ -411,7 +417,7 @@ export const TravelPage: FC = () => {
 
       <LocationsTimeline>
         {travelData.map((location, index) => {
-          const coverPhoto = resolveTravelPhoto(location.photos[0]);
+          const coverPhoto = resolveTravelPhoto(location.photos[0] ?? '') ?? undefined;
           return (
           <TimelineItem
             key={location.id}
@@ -435,10 +441,6 @@ export const TravelPage: FC = () => {
                     <Calendar size={16} />
                     {new Date(location.visitDate).toLocaleDateString('zh-CN')}
                   </MetaItem>
-                  <MetaItem>
-                    <Heart size={16} />
-                    {location.mood}
-                  </MetaItem>
                 </LocationMeta>
               </LocationHeader>
               
@@ -449,6 +451,9 @@ export const TravelPage: FC = () => {
               <PhotoStrip>
                 {location.photos.map((photo, i) => {
                   const resolved = resolveTravelPhoto(photo);
+                  if (!resolved) {
+                    return null;
+                  }
                   const alt = `${location.name} 倩影 ${i + 1}`;
                   return (
                     <PhotoThumbnail
@@ -501,11 +506,6 @@ export const TravelPage: FC = () => {
                 <MetaItem>
                   <Calendar size={16} />
                   访问时间: {new Date(selectedLocation.visitDate).toLocaleDateString('zh-CN')}
-                </MetaItem>
-                <br />
-                <MetaItem>
-                  <Heart size={16} />
-                  当时心情: {selectedLocation.mood}
                 </MetaItem>
               </div>
             </ModalContent>

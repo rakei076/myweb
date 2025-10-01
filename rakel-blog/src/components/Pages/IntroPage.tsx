@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion } from 'framer-motion';
-import { Mail, MessageCircle, Github, MapPin, GraduationCap, Calendar } from 'lucide-react';
+import { Mail, MessageCircle, Github, MapPin, GraduationCap, Calendar, User } from 'lucide-react';
+import wechatQr from '../../assets/contact/wechat-qr.png';
+import avatarImg from '../../assets/profile/avatar.jpg';
 
 const PageContainer = styled.div`
   max-width: 800px;
@@ -14,19 +16,22 @@ const Header = styled(motion.div)`
   margin-bottom: ${theme.spacing.xxl};
 `;
 
-const Avatar = styled(motion.div)`
+const AvatarFrame = styled(motion.div)`
   width: 120px;
   height: 120px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   border-radius: ${theme.borderRadius.round};
   margin: 0 auto ${theme.spacing.lg};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  color: white;
-  font-weight: bold;
   box-shadow: ${theme.shadows.lg};
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 4px;
+`;
+
+const AvatarImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: ${theme.borderRadius.round};
 `;
 
 const Name = styled.h1`
@@ -78,6 +83,12 @@ const InfoItem = styled.li`
   gap: ${theme.spacing.md};
   color: ${theme.colors.text.secondary};
   font-size: 1rem;
+
+  &.wechat-item {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: ${theme.spacing.sm};
+  }
 `;
 
 const ContactCard = styled(InfoCard)`
@@ -101,6 +112,57 @@ const ContactLink = styled.a`
   }
 `;
 
+const ContactButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.md};
+  color: ${theme.colors.text.secondary};
+  background: transparent;
+  border: none;
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.md};
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+    color: ${theme.colors.text.primary};
+    transform: translateX(4px);
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+  }
+`;
+
+const WechatQRWrapper = styled.div`
+  margin-top: ${theme.spacing.sm};
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.lg};
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: ${theme.shadows.md};
+  display: grid;
+  gap: ${theme.spacing.sm};
+  justify-items: center;
+  max-width: 220px;
+`;
+
+const WechatQRImage = styled.img`
+  width: 180px;
+  height: auto;
+  border-radius: ${theme.borderRadius.md};
+  border: 1px solid rgba(0, 0, 0, 0.08);
+`;
+
+const WechatQRNote = styled.p`
+  margin: 0;
+  color: ${theme.colors.text.secondary};
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-align: center;
+`;
+
 const BioSection = styled(motion.div)`
   background-color: ${theme.colors.secondary};
   border-radius: ${theme.borderRadius.lg};
@@ -121,7 +183,16 @@ const BioText = styled.p`
   font-size: 1rem;
 `;
 
+const FooterNote = styled.p`
+  text-align: center;
+  color: ${theme.colors.text.muted};
+  font-size: 0.85rem;
+  margin-top: ${theme.spacing.xl};
+`;
+
 export const IntroPage: React.FC = () => {
+  const [wechatQrVisible, setWechatQrVisible] = useState(false);
+
   return (
     <PageContainer>
       <Header
@@ -129,12 +200,12 @@ export const IntroPage: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Avatar
+        <AvatarFrame
           whileHover={{ scale: 1.05 }}
           transition={{ type: "spring", stiffness: 300 }}
         >
-          R
-        </Avatar>
+          <AvatarImage src={avatarImg} alt="Rakel 的头像" loading="lazy" />
+        </AvatarFrame>
         <Name>Rakel</Name>
         <Title>日本留学生 · 大二在读 · 技术爱好者</Title>
       </Header>
@@ -150,6 +221,10 @@ export const IntroPage: React.FC = () => {
             基本信息
           </InfoTitle>
           <InfoList>
+            <InfoItem>
+              <User size={18} />
+              <span>性别：男</span>
+            </InfoItem>
             <InfoItem>
               <MapPin size={18} />
               <span>日本 · 留学中</span>
@@ -176,21 +251,28 @@ export const IntroPage: React.FC = () => {
           </InfoTitle>
           <InfoList>
             <InfoItem>
-              <ContactLink href="mailto:rakel@example.com">
+              <ContactLink href="mailto:lurenjialu2@gmail.com">
                 <Mail size={18} />
-                <span>邮箱联系</span>
+                <span>lurenjialu2@gmail.com</span>
               </ContactLink>
             </InfoItem>
-            <InfoItem>
-              <ContactLink href="#" onClick={(e) => e.preventDefault()}>
+            <InfoItem className="wechat-item">
+              <ContactButton type="button" onClick={() => setWechatQrVisible((prev) => !prev)}>
                 <MessageCircle size={18} />
                 <span>微信咨询</span>
-              </ContactLink>
+              </ContactButton>
+              {wechatQrVisible && (
+                <WechatQRWrapper>
+                  <WechatQRImage src={wechatQr} alt="微信二维码" loading="lazy" />
+                  <WechatQRNote>扫码加微信：帝皇の学徒</WechatQRNote>
+                  <WechatQRNote style={{ fontSize: '0.75rem' }}>如无法扫码，也可邮件私信获取微信号。</WechatQRNote>
+                </WechatQRWrapper>
+              )}
             </InfoItem>
             <InfoItem>
               <ContactLink href="https://github.com/rakei076" target="_blank" rel="noopener noreferrer">
                 <Github size={18} />
-                <span>rakei076</span>
+                <span>Github · rakei076</span>
               </ContactLink>
             </InfoItem>
           </InfoList>
@@ -212,6 +294,8 @@ export const IntroPage: React.FC = () => {
           希望通过这个网站，能够更好地展示真实的自己，也为未来的自己留下一份珍贵的记录。
         </BioText>
       </BioSection>
+
+      <FooterNote>该网页为 GPT-5-codex100% 协作完成</FooterNote>
     </PageContainer>
   );
 };

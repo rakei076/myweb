@@ -38,7 +38,6 @@ export interface TravelLocation {
   visitDate: string;
   photos: string[];
   description: string;
-  mood: string;
   color: string;
 }
 
@@ -88,7 +87,6 @@ export interface GuestbookMessage {
   message: string;
   createdAt: string;
   location?: string;
-  mood?: string;
   highlight?: boolean;
   reply?: string;
 }

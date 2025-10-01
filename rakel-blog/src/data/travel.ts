@@ -9,7 +9,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2016-06-18',
     photos: ['/images/travel/lushan1.jpg'],
     description: '第一次真正意义上的远行。清晨的山雾和瀑布把暑假的烦闷一扫而空，也让我爱上了自然风光。',
-    mood: '清爽',
     color: '#6B8E89'
   },
   {
@@ -20,7 +19,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2017-08-12',
     photos: ['/images/travel/inner-mongolia1.jpg'],
     description: '蓝天白云下的无尽草场，第一次骑马、住蒙古包。辽阔的视野让我对世界更充满好奇。',
-    mood: '自由',
     color: '#7FBF7F'
   },
   {
@@ -31,7 +29,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2018-02-10',
     photos: ['巴黎.jpg', '意大利.jpg'],
     description: '寒假跟随家人走访巴黎、罗马等城市，博物馆与教堂的艺术细节让人震撼。',
-    mood: '震撼',
     color: '#8899C4'
   },
   {
@@ -42,7 +39,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2019-01-28',
     photos: ['白宫.jpg', '美国水库.jpg'],
     description: '第一次踏上北美大陆，漫步纽约街头，感受东西方文化的碰撞。',
-    mood: '兴奋',
     color: '#FF6B6B'
   },
   {
@@ -53,7 +49,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2023-07-08',
     photos: ['/images/travel/wuhan1.jpg'],
     description: '高考结束后的第一站，长江大桥与黄鹤楼记录了我告别高中生活的心情。',
-    mood: '释怀',
     color: '#FF9F1C'
   },
   {
@@ -64,7 +59,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2024-04-12',
     photos: ['/images/travel/okayama1.jpg'],
     description: '樱花季的冈山后乐园宁静而优雅，也是我在日本正式打卡的第一座城市。',
-    mood: '宁静',
     color: '#45B7D1'
   },
   {
@@ -75,7 +69,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2024-05-18',
     photos: ['/images/travel/osaka1.jpg'],
     description: '继续南下的旅程，心斋桥与道顿堀的热闹气氛让我彻底爱上关西。',
-    mood: '满足',
     color: '#4ECDC4'
   },
   {
@@ -86,7 +79,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2024-08-12',
     photos: ['/images/travel/luoyang1.jpg'],
     description: '夏末回国探访中原古都，龙门石窟的佛像细节令人肃然起敬。',
-    mood: '敬畏',
     color: '#C38D9E'
   },
   {
@@ -97,7 +89,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2024-08-18',
     photos: ['/images/travel/xian1.jpg'],
     description: '从洛阳一路西行到古都西安，兵马俑与古城墙让历史瞬间鲜活起来。',
-    mood: '震撼',
     color: '#8D99AE'
   },
   {
@@ -108,7 +99,6 @@ export const travelData: TravelLocation[] = [
     visitDate: '2025-01-08',
     photos: ['travel.JPG'],
     description: '寒假里完成的本州纵贯之旅，从京都的古朴到名古屋的工业，再到东京的摩天线，感受截然不同的城市节奏。',
-    mood: '充实',
     color: '#6376FF'
   }
 ];

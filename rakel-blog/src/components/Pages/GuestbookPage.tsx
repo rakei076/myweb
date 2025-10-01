@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { theme } from '../../styles/theme';
 import { guestbookMessages } from '../../data/guestbook';
 import type { GuestbookMessage } from '../../types';
-import { MapPin, MessageSquare, Smile } from 'lucide-react';
+import { MapPin, MessageSquare } from 'lucide-react';
 
 const PageContainer = styled.div`
   max-width: 900px;
@@ -264,7 +264,6 @@ export const GuestbookPage: FC = () => {
   const [messages, setMessages] = useState<GuestbookMessage[]>(() => guestbookMessages);
   const [name, setName] = useState('');
   const [location, setLocation] = useState('');
-  const [mood, setMood] = useState('');
   const [content, setContent] = useState('');
 
   const sortedMessages = useMemo(() => {
@@ -287,14 +286,12 @@ export const GuestbookPage: FC = () => {
       name: name.trim(),
       message: content.trim(),
       createdAt: new Date().toISOString(),
-      location: location.trim() || undefined,
-      mood: mood.trim() || undefined
+      location: location.trim() || undefined
     };
 
     setMessages((prev) => [newMessage, ...prev]);
     setName('');
     setLocation('');
-    setMood('');
     setContent('');
   };
 
@@ -308,7 +305,7 @@ export const GuestbookPage: FC = () => {
         <HeroTitle>留言板</HeroTitle>
         <HeroSubtitle>
           这里是小小的“灵感交换区”。欢迎告诉我你正在关注的话题、想合作的项目，
-          或者单纯分享此刻的心情。每一条留言都会认真阅读并尽力回复。
+          或者分享你的灵感与想法。每一条留言都会认真阅读并尽力回复。
         </HeroSubtitle>
         <HeroAccent />
       </HeroCard>
@@ -359,12 +356,6 @@ export const GuestbookPage: FC = () => {
                             {message.location}
                           </span>
                         )}
-                        {message.mood && (
-                          <span>
-                            <Smile size={14} style={{ marginRight: 4 }} />
-                            {message.mood}
-                          </span>
-                        )}
                       </MetaRow>
 
                       <MessageBody>{message.message}</MessageBody>
@@ -412,16 +403,6 @@ export const GuestbookPage: FC = () => {
             value={location}
             onChange={(event) => setLocation(event.target.value)}
             placeholder="东京 / 广州 / 线上"
-          />
-        </FieldGroup>
-
-        <FieldGroup>
-          <Label htmlFor="guestbook-mood">此刻心情关键词（可选）</Label>
-          <Input
-            id="guestbook-mood"
-            value={mood}
-            onChange={(event) => setMood(event.target.value)}
-            placeholder="期待合作 / 偶遇灵感"
           />
         </FieldGroup>
 

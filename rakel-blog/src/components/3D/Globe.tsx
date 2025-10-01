@@ -1,6 +1,6 @@
-import { useRef, useMemo, useState, useEffect, type FC } from 'react';
+import { useRef, useMemo, useState, useEffect, Suspense, type FC } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { OrbitControls, Stars, Text } from '@react-three/drei';
+import { Html, OrbitControls, Stars, Text } from '@react-three/drei';
 import {
   Vector3,
   Vector2,
@@ -23,12 +23,51 @@ import { travelData } from '../../data/travel';
 import type { TravelLocation } from '../../types';
 
 const EARTH_TEXTURES = {
-  day: 'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg',
-  normal: 'https://threejs.org/examples/textures/planets/earth_normal_2048.jpg',
-  specular: 'https://threejs.org/examples/textures/planets/earth_specular_2048.jpg',
-  night: 'https://threejs.org/examples/textures/planets/earth_lights_2048.png',
-  clouds: 'https://threejs.org/examples/textures/planets/earth_clouds_1024.png'
+  day: '/textures/earth/day.jpg',
+  normal: '/textures/earth/normal.jpg',
+  specular: '/textures/earth/specular.jpg',
+  night: '/textures/earth/night.png',
+  clouds: '/textures/earth/clouds.png'
 } as const;
+
+const GlobeLoading: FC = () => (
+  <Html center>
+    <div
+      style={{
+        padding: '12px 20px',
+        borderRadius: '14px',
+        background: 'rgba(2, 6, 21, 0.92)',
+        color: '#f5f9ff',
+        fontSize: '0.95rem',
+        letterSpacing: '0.04em',
+        boxShadow: '0 10px 30px rgba(3, 12, 43, 0.35)'
+      }}
+    >
+      🌐 正在加载 3D 地球资源...
+    </div>
+  </Html>
+);
+
+const ContextLostOverlay: FC = () => (
+  <Html center>
+    <div
+      style={{
+        maxWidth: '320px',
+        padding: '16px 22px',
+        borderRadius: '16px',
+        background: 'rgba(12, 18, 41, 0.95)',
+        color: '#ffe9e9',
+        fontSize: '0.9rem',
+        lineHeight: 1.6,
+        textAlign: 'center',
+        boxShadow: '0 12px 32px rgba(8, 14, 33, 0.45)',
+        border: '1px solid rgba(255, 152, 146, 0.35)'
+      }}
+    >
+      WebGL 上下文已丢失，请刷新页面或检查浏览器的硬件加速设置。
+    </div>
+  </Html>
+);
 
 interface GlobeProps {
   onLocationClick: (location: TravelLocation) => void;
@@ -287,14 +326,48 @@ const GlobeScene: FC<GlobeProps> = ({ onLocationClick, selectedLocation }) => {
 };
 
 export const Globe: FC<GlobeProps> = ({ onLocationClick, selectedLocation }) => {
+  const [canvasEl, setCanvasEl] = useState<HTMLCanvasElement | null>(null);
+  const [contextLost, setContextLost] = useState(false);
+
+  useEffect(() => {
+    if (!canvasEl) {
+      return;
+    }
+
+    const handleContextLost = (event: Event) => {
+      event.preventDefault();
+      setContextLost(true);
+    };
+
+    const handleContextRestored = () => {
+      setContextLost(false);
+    };
+
+    canvasEl.addEventListener('webglcontextlost', handleContextLost);
+    canvasEl.addEventListener('webglcontextrestored', handleContextRestored);
+
+    return () => {
+      canvasEl.removeEventListener('webglcontextlost', handleContextLost);
+      canvasEl.removeEventListener('webglcontextrestored', handleContextRestored);
+    };
+  }, [canvasEl]);
+
   return (
     <Canvas
       shadows
       camera={{ position: [0, 0, 14], fov: 55 }}
       style={{ width: '100%', height: '520px', borderRadius: '18px', background: 'linear-gradient(160deg, #0a1747 0%, #020615 100%)' }}
       dpr={[1, 2]}
+      onCreated={({ gl }) => {
+        setCanvasEl(gl.domElement);
+        gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      }}
     >
-      <GlobeScene onLocationClick={onLocationClick} selectedLocation={selectedLocation} />
+      <Suspense fallback={<GlobeLoading />}>
+        <GlobeScene onLocationClick={onLocationClick} selectedLocation={selectedLocation} />
+      </Suspense>
+
+      {contextLost && <ContextLostOverlay />}
 
       <OrbitControls
         enableZoom

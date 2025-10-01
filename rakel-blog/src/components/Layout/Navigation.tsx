@@ -106,8 +106,6 @@ export const Navigation: React.FC = () => {
       
       <PageIndicator>
         Rakel's Blog
-        <br />
-        Made with ❤️
       </PageIndicator>
     </NavigationContainer>
   );
