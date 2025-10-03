@@ -57,19 +57,6 @@ export const interestsData: Interest[] = [
 
   // 技术类
   {
-    id: 'cursor',
-    category: 'tech',
-    name: 'Cursor',
-    icon: 'Code',
-    level: 5,
-    description: 'AI辅助编程工具的重度使用者',
-    heroTagline: 'AI 让编码像开挂一样顺滑',
-    heroHighlight: 'Prompt 工程 & 自动化流程达人',
-    heroBackground: 'linear-gradient(135deg, #081221 0%, #102a43 45%, #3f8efc 100%)',
-    heroBackgroundImage: 'cursor.jpg',
-    achievements: ['效率提升专家', '早期用户', '社区贡献者']
-  },
-  {
     id: 'ai-tools',
     category: 'tech',
     name: 'AI工具',

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 import { motion } from 'framer-motion';
+import avatarImg from '../../assets/profile/avatar.jpg';
 
 const SidebarContainer = styled.div`
   height: 100vh;
@@ -12,29 +13,37 @@ const SidebarContainer = styled.div`
   padding: ${theme.spacing.lg};
 `;
 
-const Logo = styled(motion.div)`
-  width: 50px;
-  height: 50px;
-  background-color: rgba(255, 255, 255, 0.55);
+const Logo = styled(motion.button)`
+  width: 56px;
+  height: 56px;
   border-radius: ${theme.borderRadius.round};
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: ${theme.spacing.xl};
   cursor: pointer;
+  background: rgba(15, 22, 36, 0.35);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
   &:hover {
-    background-color: rgba(255, 255, 255, 0.7);
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.85);
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.accent};
+    outline-offset: 3px;
   }
 `;
 
-const LogoText = styled.span`
-  color: ${theme.colors.text.primary};
-  font-weight: bold;
-  font-size: 20px;
-  font-family: ${theme.fonts.english};
+const LogoImage = styled.img`
+  width: 100%;
+  height: 100%;
+  border-radius: ${theme.borderRadius.round};
+  object-fit: cover;
 `;
 
 const DecorativeElements = styled.div`
@@ -55,10 +64,13 @@ export const Sidebar: React.FC = () => {
   return (
     <SidebarContainer>
       <Logo
-        whileHover={{ scale: 1.1 }}
+        type="button"
+        whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="返回顶部"
       >
-        <LogoText>R</LogoText>
+        <LogoImage src={avatarImg} alt="Rakel 的头像" />
       </Logo>
       
       <DecorativeElements>

@@ -356,11 +356,12 @@ export const Globe: FC<GlobeProps> = ({ onLocationClick, selectedLocation }) => 
     <Canvas
       shadows
       camera={{ position: [0, 0, 14], fov: 55 }}
-      style={{ width: '100%', height: '520px', borderRadius: '18px', background: 'linear-gradient(160deg, #0a1747 0%, #020615 100%)' }}
+      style={{ width: '100%', height: '100%', display: 'block' }}
       dpr={[1, 2]}
       onCreated={({ gl }) => {
         setCanvasEl(gl.domElement);
         gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        gl.setClearColor(new Color('#040b1c'), 0);
       }}
     >
       <Suspense fallback={<GlobeLoading />}>

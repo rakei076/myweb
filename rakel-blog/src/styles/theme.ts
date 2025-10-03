@@ -28,12 +28,14 @@ export const theme = {
     sm: '0.25rem',
     md: '0.5rem',
     lg: '1rem',
+    xl: '1.5rem',
     round: '50%'
   },
   shadows: {
     sm: '0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)',
     md: '0 4px 6px rgba(0, 0, 0, 0.07), 0 1px 3px rgba(0, 0, 0, 0.1)',
-    lg: '0 10px 20px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05)'
+    lg: '0 10px 20px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.05)',
+    xl: '0 22px 48px rgba(0, 0, 0, 0.18), 0 12px 24px rgba(0, 0, 0, 0.12)'
   },
   breakpoints: {
     mobile: '768px',
