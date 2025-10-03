@@ -63,24 +63,6 @@ export interface TimelineEvent {
   relatedPostId?: string;
 }
 
-export interface Bookmark {
-  id: string;
-  title: string;
-  url: string;
-  description: string;
-  category: 'tech' | 'entertainment' | 'learning' | 'tools';
-  icon: string;
-}
-
-export interface Skill {
-  id: string;
-  name: string;
-  category: 'frontend' | 'backend' | 'tools' | 'languages';
-  level: number; // 1-10
-  icon: string;
-  projects: string[]; // project ids
-}
-
 export interface GuestbookMessage {
   id: string;
   name: string;

@@ -8,9 +8,7 @@ export const interestsData: Interest[] = [
     name: '王者荣耀',
     icon: 'Gamepad2',
     level: 4,
-    description: '热爱MOBA游戏，主玩射手和法师位置',
-    heroTagline: '峡谷团战都是提前设计好的奇袭秀',
-    heroHighlight: '主玩射手 & 法师｜节奏掌控者',
+  description: '',
     heroBackground: 'linear-gradient(135deg, #0b1f4b 0%, #243b73 45%, #b52dff 100%)',
     heroBackgroundImage: 'honor-of-kings.jpg',
     achievements: ['钻石段位', '多次MVP', '团队配合达人']
