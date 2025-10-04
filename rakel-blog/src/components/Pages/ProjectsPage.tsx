@@ -120,8 +120,15 @@ const ProjectImage = styled.div<{ $image: string }>`
 
 const ImagePlaceholder = styled.div`
   color: white;
-  font-size: 3rem;
+  font-size: 3.2rem;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    line-height: 1;
+  }
 `;
 
 const ProjectInfo = styled.div`
@@ -319,7 +326,7 @@ export const ProjectsPage: FC = () => {
                   )}
                   <ProjectImage $image={project.image}>
                     <ImagePlaceholder>
-                      <Code />
+                      {project.icon ? <span>{project.icon}</span> : <Code />}
                     </ImagePlaceholder>
                   </ProjectImage>
                   <ProjectInfo>

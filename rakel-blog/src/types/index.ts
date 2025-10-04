@@ -11,6 +11,7 @@ export interface Project {
   description: string;
   image: string;
   technologies: string[];
+  icon?: string;
   githubUrl?: string;
   liveUrl?: string;
   featured: boolean;
@@ -51,6 +52,11 @@ export interface BlogPost {
   featured: boolean;
   readingTime: string;
   coverImage?: string;
+  accentColor: string;
+  accentGradient: string;
+  badgeIcon: string;
+  heroPattern: 'dots' | 'waves' | 'grid' | 'mesh';
+  keyPoints?: string[];
 }
 
 export interface TimelineEvent {

@@ -10,6 +10,7 @@ import { TravelPage } from './components/Pages/TravelPage';
 import { TimelinePage } from './components/Pages/TimelinePage';
 import { BlogPage } from './components/Pages/BlogPage';
 import { GuestbookPage } from './components/Pages/GuestbookPage';
+import { BlogPostPage } from './components/Pages/BlogPostPage';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/travel" element={<TravelPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:postId" element={<BlogPostPage />} />
             <Route path="/timeline" element={<TimelinePage />} />
             <Route path="/guestbook" element={<GuestbookPage />} />
           </Routes>

@@ -288,7 +288,7 @@ const TimelineItem: FC<{ event: TimelineDisplayItem; index: number }> = ({ event
 
         {relatedPost && (
           <div style={{ marginTop: theme.spacing.lg }}>
-            <BlogPreviewCard to={`/blog#${relatedPost.id}`}>
+            <BlogPreviewCard to={`/blog/${relatedPost.id}`}>
               <BlogPreviewInfo>
                 <BlogPreviewTitle>{relatedPost.title}</BlogPreviewTitle>
                 <BlogPreviewMeta>
