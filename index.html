@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人博客 - Personal Blog</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/timeline.css">
+    <link rel="stylesheet" href="css/wordcloud.css">
+</head>
+<body>
+    <!-- Language Selection Modal -->
+    <div id="language-modal" class="modal">
+        <div class="modal-content">
+            <h2>Choose Language / 言語選択 / 选择语言</h2>
+            <div class="language-options">
+                <button class="language-btn" data-lang="zh" onclick="selectLanguage('zh')">
+                    <span class="flag">🇨🇳</span>
+                    <span>中文</span>
+                </button>
+                <button class="language-btn" data-lang="ja" onclick="selectLanguage('ja')">
+                    <span class="flag">🇯🇵</span>
+                    <span>日本語</span>
+                </button>
+                <button class="language-btn" data-lang="en" onclick="selectLanguage('en')">
+                    <span class="flag">🇺🇸</span>
+                    <span>English</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="hidden">
+        <!-- Header -->
+        <header class="header">
+            <nav class="nav">
+                <div class="nav-brand">
+                    <h1 class="brand-title" data-zh="个人博客" data-ja="個人ブログ" data-en="Personal Blog">个人博客</h1>
+                </div>
+                <div class="nav-menu">
+                    <a href="#about" class="nav-link" data-zh="关于我" data-ja="私について" data-en="About">关于我</a>
+                    <a href="#timeline" class="nav-link" data-zh="时间轴" data-ja="タイムライン" data-en="Timeline">时间轴</a>
+                    <a href="#interests" class="nav-link" data-zh="兴趣爱好" data-ja="趣味" data-en="Interests">兴趣爱好</a>
+                    <button id="language-toggle" class="language-toggle" onclick="showLanguageModal()">🌐</button>
+                </div>
+            </nav>
+        </header>
+
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <div class="container">
+                <h2 class="section-title" data-zh="关于我" data-ja="私について" data-en="About Me">关于我</h2>
+                <div class="about-content">
+                    <div class="about-text">
+                        <p class="intro-text" 
+                           data-zh="你好！我是一名热爱技术和生活的开发者。" 
+                           data-ja="こんにちは！私は技術と人生を愛する開発者です。" 
+                           data-en="Hello! I'm a developer who loves technology and life.">
+                           你好！我是一名热爱技术和生活的开发者。
+                        </p>
+                        <p class="description-text"
+                           data-zh="我对编程、摄影、旅游和游戏都有着浓厚的兴趣。在这里，我分享我的经历和想法。"
+                           data-ja="プログラミング、写真、旅行、ゲームに深い興味を持っています。ここで私の経験と考えを共有します。"
+                           data-en="I have a deep interest in programming, photography, travel, and gaming. Here I share my experiences and thoughts.">
+                           我对编程、摄影、旅游和游戏都有着浓厚的兴趣。在这里，我分享我的经历和想法。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline Section -->
+        <section id="timeline" class="section timeline-section">
+            <div class="container">
+                <h2 class="section-title" data-zh="我的时间轴" data-ja="私のタイムライン" data-en="My Timeline">我的时间轴</h2>
+                <div class="timeline-container">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-items">
+                        <!-- Timeline items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interests Section -->
+        <section id="interests" class="section interests-section">
+            <div class="container">
+                <h2 class="section-title" data-zh="兴趣爱好" data-ja="趣味" data-en="My Interests">兴趣爱好</h2>
+                <div class="wordcloud-container">
+                    <div class="wordcloud">
+                        <!-- Word cloud items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p class="footer-text" 
+                   data-zh="© 2024 个人博客. 感谢您的访问！" 
+                   data-ja="© 2024 個人ブログ. ご訪問ありがとうございます！" 
+                   data-en="© 2024 Personal Blog. Thank you for visiting!">
+                   © 2024 个人博客. 感谢您的访问！
+                </p>
+            </div>
+        </footer>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/timeline.js"></script>
+    <script src="js/wordcloud.js"></script>
+</body>
+</html>
