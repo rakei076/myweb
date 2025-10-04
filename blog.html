@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客文章 | 我的个人博客</title>
+    <meta name="description" content="浏览我的所有博客文章，涵盖技术、生活和学习心得">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .blog-page {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        
+        .blog-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px;
+        }
+        
+        .blog-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .blog-post {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            color: #7f8c8d;
+            flex-wrap: wrap;
+        }
+        
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .author-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #3498db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .post-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+        
+        .post-title a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .post-title a:hover {
+            color: #3498db;
+        }
+        
+        .post-excerpt {
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .post-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .tag {
+            background: #ecf0f1;
+            color: #2c3e50;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: #3498db;
+            color: white;
+        }
+        
+        .read-more {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+        }
+        
+        .read-more:hover {
+            color: #2980b9;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        
+        .pagination a,
+        .pagination span {
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #333;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination a:hover {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .pagination .current {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        
+        .search-box {
+            max-width: 400px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 3rem 1rem 1rem;
+            border: 2px solid #ecf0f1;
+            border-radius: 25px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        .search-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #7f8c8d;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">我的博客</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">首页</a>
+                <a href="index.html#about" class="nav-link">关于我</a>
+                <a href="blog.html" class="nav-link">博客</a>
+                <a href="index.html#projects" class="nav-link">项目</a>
+                <a href="index.html#contact" class="nav-link">联系</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 博客页面内容 -->
+    <div class="blog-page">
+        <div class="container">
+            <!-- 页面标题 -->
+            <div class="blog-header">
+                <h1>我的博客</h1>
+                <p>分享技术心得、生活感悟和学习笔记</p>
+            </div>
+
+            <!-- 搜索框 -->
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="搜索文章...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
+
+            <!-- 文章分类过滤 -->
+            <div class="blog-filters">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="tech">技术</button>
+                <button class="filter-btn" data-filter="life">生活</button>
+                <button class="filter-btn" data-filter="tutorial">教程</button>
+                <button class="filter-btn" data-filter="thoughts">随想</button>
+            </div>
+
+            <!-- 博客文章列表 -->
+            <div class="blog-list">
+                <article class="blog-post" data-category="tech">
+                    <div class="post-meta">
+                        <div class="post-author">
+                            <div class="author-avatar">[您]</div>
+                            <span>[您的姓名]</span>
+                        </div>
+                        <span><i class="fas fa-calendar"></i> [发布日期]</span>
+                        <span><i class="fas fa-clock"></i> 5分钟阅读</span>
+                        <span><i class="fas fa-eye"></i> [阅读次数]次</span>
+                    </div>
+                    <h2 class="post-title">
+                        <a href="#">[技术文章标题] - 深入理解前端开发的最佳实践</a>
+                    </h2>
+                    <div class="post-tags">
+                        <a href="#" class="tag">JavaScript</a>
+                        <a href="#" class="tag">前端开发</a>
+                        <a href="#" class="tag">最佳实践</a>
+                    </div>
+                    <p class="post-excerpt">
+                        在这篇文章中，我将分享我在前端开发过程中总结的一些最佳实践和经验心得。
+                        涵盖了代码组织、性能优化、用户体验等多个方面，希望能对正在学习前端开发的朋友们有所帮助...
+                    </p>
+                    <a href="#" class="read-more">
+                        阅读全文 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="blog-post" data-category="tutorial">
+                    <div class="post-meta">
+                        <div class="post-author">
+                            <div class="author-avatar">[您]</div>
+                            <span>[您的姓名]</span>
+                        </div>
+                        <span><i class="fas fa-calendar"></i> [发布日期]</span>
+                        <span><i class="fas fa-clock"></i> 8分钟阅读</span>
+                        <span><i class="fas fa-eye"></i> [阅读次数]次</span>
+                    </div>
+                    <h2 class="post-title">
+                        <a href="#">[教程标题] - 从零开始学习React开发</a>
+                    </h2>
+                    <div class="post-tags">
+                        <a href="#" class="tag">React</a>
+                        <a href="#" class="tag">教程</a>
+                        <a href="#" class="tag">入门指南</a>
+                    </div>
+                    <p class="post-excerpt">
+                        这是一份详细的React学习指南，从基础概念到实际项目开发，逐步引导初学者掌握React的核心知识。
+                        包含了组件开发、状态管理、路由配置等重要主题，每个章节都配有实际的代码示例...
+                    </p>
+                    <a href="#" class="read-more">
+                        阅读全文 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="blog-post" data-category="life">
+                    <div class="post-meta">
+                        <div class="post-author">
+                            <div class="author-avatar">[您]</div>
+                            <span>[您的姓名]</span>
+                        </div>
+                        <span><i class="fas fa-calendar"></i> [发布日期]</span>
+                        <span><i class="fas fa-clock"></i> 3分钟阅读</span>
+                        <span><i class="fas fa-eye"></i> [阅读次数]次</span>
+                    </div>
+                    <h2 class="post-title">
+                        <a href="#">[生活感悟] - 程序员的工作与生活平衡</a>
+                    </h2>
+                    <div class="post-tags">
+                        <a href="#" class="tag">生活</a>
+                        <a href="#" class="tag">工作平衡</a>
+                        <a href="#" class="tag">感悟</a>
+                    </div>
+                    <p class="post-excerpt">
+                        作为一名程序员，如何在繁忙的工作中保持生活的平衡是一个永恒的话题。
+                        在这篇文章中，我想分享一些我在这方面的思考和实践，希望能给同行们一些启发...
+                    </p>
+                    <a href="#" class="read-more">
+                        阅读全文 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="blog-post" data-category="tech">
+                    <div class="post-meta">
+                        <div class="post-author">
+                            <div class="author-avatar">[您]</div>
+                            <span>[您的姓名]</span>
+                        </div>
+                        <span><i class="fas fa-calendar"></i> [发布日期]</span>
+                        <span><i class="fas fa-clock"></i> 6分钟阅读</span>
+                        <span><i class="fas fa-eye"></i> [阅读次数]次</span>
+                    </div>
+                    <h2 class="post-title">
+                        <a href="#">[技术分享] - Node.js性能优化实战经验</a>
+                    </h2>
+                    <div class="post-tags">
+                        <a href="#" class="tag">Node.js</a>
+                        <a href="#" class="tag">性能优化</a>
+                        <a href="#" class="tag">后端开发</a>
+                    </div>
+                    <p class="post-excerpt">
+                        在实际的Node.js项目开发中，性能优化是一个不可忽视的重要环节。
+                        本文将从内存管理、异步处理、数据库优化等角度，分享一些实用的性能优化技巧和经验...
+                    </p>
+                    <a href="#" class="read-more">
+                        阅读全文 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </article>
+
+                <article class="blog-post" data-category="thoughts">
+                    <div class="post-meta">
+                        <div class="post-author">
+                            <div class="author-avatar">[您]</div>
+                            <span>[您的姓名]</span>
+                        </div>
+                        <span><i class="fas fa-calendar"></i> [发布日期]</span>
+                        <span><i class="fas fa-clock"></i> 4分钟阅读</span>
+                        <span><i class="fas fa-eye"></i> [阅读次数]次</span>
+                    </div>
+                    <h2 class="post-title">
+                        <a href="#">[随想] - 技术学习路径的思考</a>
+                    </h2>
+                    <div class="post-tags">
+                        <a href="#" class="tag">学习</a>
+                        <a href="#" class="tag">思考</a>
+                        <a href="#" class="tag">成长</a>
+                    </div>
+                    <p class="post-excerpt">
+                        在快速发展的技术领域中，如何制定有效的学习路径是每个技术人员都需要思考的问题。
+                        这篇文章记录了我对技术学习方法、学习节奏和知识体系构建的一些思考...
+                    </p>
+                    <a href="#" class="read-more">
+                        阅读全文 <i class="fas fa-arrow-right"></i>
+                    </a>
+                </article>
+            </div>
+
+            <!-- 分页导航 -->
+            <div class="pagination">
+                <a href="#" class="prev">← 上一页</a>
+                <span class="current">1</span>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#">下一页 →</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>我的博客</h3>
+                    <p>感谢您访问我的个人博客！</p>
+                </div>
+                <div class="footer-links">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="index.html">首页</a></li>
+                        <li><a href="index.html#about">关于我</a></li>
+                        <li><a href="blog.html">博客</a></li>
+                        <li><a href="index.html#projects">项目</a></li>
+                    </ul>
+                </div>
+                <div class="footer-social">
+                    <h4>关注我</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 [您的姓名]. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // 博客页面特定的JavaScript功能
+        document.addEventListener('DOMContentLoaded', function() {
+            // 文章过滤功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const blogPosts = document.querySelectorAll('.blog-post');
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除其他按钮的active类
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // 添加当前按钮的active类
+                    this.classList.add('active');
+
+                    const filter = this.getAttribute('data-filter');
+                    
+                    blogPosts.forEach(post => {
+                        if (filter === 'all' || post.getAttribute('data-category') === filter) {
+                            post.style.display = 'block';
+                            post.style.animation = 'fadeInUp 0.5s ease';
+                        } else {
+                            post.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // 搜索功能
+            const searchInput = document.querySelector('.search-input');
+            const searchBtn = document.querySelector('.search-btn');
+
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                
+                blogPosts.forEach(post => {
+                    const title = post.querySelector('.post-title').textContent.toLowerCase();
+                    const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
+                    const tags = Array.from(post.querySelectorAll('.tag')).map(tag => tag.textContent.toLowerCase()).join(' ');
+                    
+                    if (title.includes(searchTerm) || excerpt.includes(searchTerm) || tags.includes(searchTerm)) {
+                        post.style.display = 'block';
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+
+                // 重置过滤按钮
+                filterBtns.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+            }
+
+            searchBtn.addEventListener('click', performSearch);
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // 清空搜索
+            searchInput.addEventListener('input', function() {
+                if (this.value === '') {
+                    blogPosts.forEach(post => {
+                        post.style.display = 'block';
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
